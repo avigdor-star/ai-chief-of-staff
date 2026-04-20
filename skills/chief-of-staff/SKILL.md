@@ -9,7 +9,9 @@ description: >
   status, wants to dispatch a task to a sub-agent, or says things like "keep an eye on X",
   "did I miss anything", "what's urgent", or "catch me up." Also trigger when the user
   invokes the Chief of Staff by its custom name (stored in State Dashboard → My Setup →
-  Chief Name). This skill is the central nervous system — if the user's request involves
+  Chief Name). Also trigger on Captain's Log entries — "log this", "captain's log",
+  "journal that", "remember this" — which add a structured entry to the user's log.
+  This skill is the central nervous system — if the user's request involves
   operational awareness, this skill should handle it.
 ---
 
@@ -187,6 +189,28 @@ For each database, create the properties and page templates specified in `refere
 
 > **Expected after setup:** all seven databases (Briefings, Research, Drafts, Action Plans, Projects, People, Reference) will be empty. That's correct — they fill up as the system runs. An empty Briefings view on day one means setup worked; it doesn't mean something's broken. Reassure the user of this before handing off from S4.
 
+### S4.5: Create the Captain's Log (mandatory)
+
+Captain's Log is where the user logs milestones, decisions, wins, learnings, problems, and ideas they want to recall later. It is **mandatory** on every platform. Load `references/captains-log.md` for the full schema and platform-specific layout.
+
+Create the structure per the chosen platform:
+
+- **`notion`** → create a `Captain's Log` database at the **workspace top level** (NOT under the Chief of Staff parent — kept independent so the user can find it easily). Apply the schema in `captains-log.md` and add the three default views (Recent, By Type, By Project).
+- **`obsidian`** / **`markdown-folder`** → create the folder `Chief-of-Staff/Captain's Log/` (empty, ready for entries).
+- **`logseq`** → don't create the page proactively. Just record in the State Dashboard that Captain's Log lives at the page `Captain's Log` (or use the namespace path if the user chose `namespaces` placement). The page is created on the first entry.
+
+**Then write the one auto-generated first entry** to mark today's setup. This is the ONE entry the system creates on the user's behalf — everything else comes from the user saying "log this":
+
+- Title: `Chief of Staff set up`
+- Date: today
+- Type: `Milestone`
+- Project: `Chief of Staff`
+- Details: short summary — platform chosen, date, anything notable from setup
+
+Then tell the user where Captain's Log lives and how to add entries:
+
+> "Captain's Log is set up. To add an entry, just say 'log this: …' or 'captain's log: …' and I'll write it down. I already added one entry to mark today's setup."
+
 ### S5: Populate the State Dashboard
 
 Fill in the State Dashboard using the answers from S2, following the conventions file for the chosen platform (`file-based-conventions.md` or `notion-conventions.md`).
@@ -251,7 +275,8 @@ Read these files in this order:
 3. **Live Feed:** `Chief-of-Staff/Live Feed.md` — what happened since the last session. **Read the ALERTS section first.**
 4. **Messaging channel:** recent messages from the team feed channel (Slack `#cos-feed` or equivalent), if messaging is connected. Background checks post findings here. Skip if not connected.
 5. **Latest briefing:** most recent file in `Chief-of-Staff/Briefings/` — what was covered last time and what carried over.
-6. **Life context (optional):** any journal, life-snapshot, or personal-notes file elsewhere in the vault. The system works fine without it.
+6. **Captain's Log (last 7 days):** list entries in `Chief-of-Staff/Captain's Log/` with dates in the last 7 days. Titles + Type only — don't load full details unless asked.
+7. **Life context (optional):** any journal, life-snapshot, or personal-notes file elsewhere in the vault. The system works fine without it.
 
 ### For Notion (`notion`):
 
@@ -261,7 +286,8 @@ Use the Notion connector to read these in order:
 2. **Live Feed page** — **read the Urgent Alerts callout at the top first.**
 3. **Messaging channel:** recent messages from the team feed channel, if messaging is connected. Skip if not connected.
 4. **Latest briefing:** query the Briefings database for the most recent record (sort by Date descending, limit 1).
-5. **Life context (optional):** any life-snapshot or journal page in the user's broader Notion workspace. Skip if none exists.
+5. **Captain's Log (last 7 days):** query the top-level `Captain's Log` database for entries with Date in the last 7 days. Titles + Type only.
+6. **Life context (optional):** any life-snapshot or journal page in the user's broader Notion workspace. Skip if none exists.
 
 > In Notion, if something doesn't fit the schema in `notion-conventions.md`, the schema is right and the action is wrong — same contract as `_index.md` in a file-based vault.
 
@@ -354,6 +380,11 @@ RISKS / BLOCKERS:
 RECOMMENDED ACTIONS:
 - Specific: "Reply to [person] about [topic]" not "Consider following up"
 
+RECENT LOG (last 7 days):
+- [Date] [Type] — Title
+- [Date] [Type] — Title
+- (Titles only — user can open the entry for full details. Omit this section entirely if no entries in the last 7 days — no empty header.)
+
 ROLLOUT NUDGE:
 - [One soft sentence per the Pacer pattern — see `references/rollout-reminder.md`]
 - Render ONLY when ALL are true: next_eligible ≤ today, no Axiom 1 or 2 flag this session, nudge hasn't fired this session. Otherwise omit the section entirely (no empty header).
@@ -392,6 +423,10 @@ Triggers: any task, question, or request that isn't a briefing.
 **All output documents must follow the conventions for the chosen platform** — see `references/file-based-conventions.md` (Obsidian / Logseq / markdown folder) or `references/notion-conventions.md` (Notion).
 
 After a helper finishes its work: update the State Dashboard and link the new document back to the briefing/project that requested it. File-based vaults use `[[wikilinks]]`; Notion uses Relation properties.
+
+**Captain's Log entries:** "log this: …", "captain's log: …", "journal that …", "remember this …" → create a Captain's Log entry per `references/captains-log.md`. Infer Type and Project from context; tell the user what you picked so they can correct it. Confirm briefly after writing.
+
+**Captain's Log recall:** "what did I log about X", "show me my wins this month", "what did I decide about Y" → query Captain's Log with the appropriate filter and return Title + Date + Type + one-line snippet per entry. See `references/captains-log.md` → "Recall".
 
 **Status questions:** Answer from State Dashboard + Live Feed + messaging. Link to relevant files.
 **Watch list:** "Keep an eye on X" → add to Watch List in State Dashboard.
@@ -491,3 +526,4 @@ Read these when needed:
 - `references/notion-conventions.md` — How to structure documents in Notion: databases, pages, properties, relations, templates.
 - `references/backup-setup.md` — AI-assisted walkthrough for setting up end-to-end encrypted backup. Four paths for file-based vaults (Cryptomator, git-crypt, Proton Drive, Syncthing) and one path for Notion (weekly encrypted export). Load during Step S6 and whenever Step 1a's backup check fails.
 - `references/rollout-reminder.md` — The Pacer pattern: rollout nudge logic, verbatim phrasings, Express Lane, snooze, rollback, and the `rollout_reminder` storage schema. Load whenever a rollout nudge fires, the user expresses Express/snooze/rollback intent, or a contextual hook is detected.
+- `references/captains-log.md` — Captain's Log: mandatory structured personal log across all four platforms. Entry schema, platform-specific storage, setup behavior, trigger phrases, briefing inclusion, and recall queries. Load during Step S4.5 and whenever the user says "log this", "captain's log", "journal that", or "remember this".
