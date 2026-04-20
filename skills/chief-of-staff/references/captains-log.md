@@ -21,6 +21,32 @@ Treat any of these as a trigger to create one new Captain's Log entry. Confirm t
 
 ---
 
+## Proactive prompting — ASK, don't write
+
+The agent should not silently write entries — but it SHOULD proactively ask whenever something log-worthy happens. The user can't be expected to remember to log. That's the agent's job. Writing without permission is forbidden; asking permission is expected.
+
+**When to ask** (whenever any of these happens during a session, ask "Want me to log this?" in one short sentence):
+
+- A release, publish, deploy, or ship (code, plugin, skill, page — anything)
+- A decision the user makes and states (pricing, platform, hiring, strategy, direction)
+- A win (new client, funding, launch success, positive feedback)
+- A learning or insight — the user says "huh, interesting" or reflects on a lesson
+- A problem noted — bug, blocker, issue to remember
+- An idea to not-forget — "we should do X later"
+- Completion of a meaningful piece of work the agent helped with
+
+**How to ask:** one line, at the end of the relevant response. Suggest Type and Project so "yes" is enough:
+
+- "Want me to log this as a Milestone under Chief of Staff?"
+- "Sounds like a decision worth logging — want me to add it to Captain's Log?"
+- "Log this as a Learning tagged [project]?"
+
+If the user says yes → create the entry. If they say no or skip past it → don't push, don't ask again for the same thing.
+
+**Don't ask for trivial things.** Routine back-and-forth, small tasks, and pure conversation don't need a log prompt. Use judgment — would the user want to recall this in 6 months? If yes, ask. If no, stay silent.
+
+---
+
 ## Entry schema (same on every platform)
 
 Every entry has 5 fields:
