@@ -9,6 +9,7 @@ Works with **Claude Code** and **Cowork** (Claude Desktop).
 ## What it does
 
 - **Daily briefing** — what you missed, what's due today, who's waiting on you, what to do next.
+- **Captain's Log** — a quick-access personal log for milestones, decisions, wins, learnings, problems, and ideas. Works on its own OR through the Chief of Staff.
 - **Signal filtering** — skips newsletters and bot noise, surfaces real people and real deadlines.
 - **State Dashboard** — one source of truth for projects, people, open loops, and watch items.
 - **Phased rollout** — starts manual, adds desktop "watchers" when you're ready, moves to cloud routines once you trust it.
@@ -16,6 +17,21 @@ Works with **Claude Code** and **Cowork** (Claude Desktop).
 - **Encrypted backup walkthrough** — sets up an end-to-end encrypted off-machine backup so your notes survive a dead laptop or a lost Notion account.
 
 Picks your platform during setup: **Obsidian**, **Logseq**, a **plain markdown folder**, or **Notion**. All four are supported.
+
+---
+
+## Two skills, one system
+
+This plugin gives you **two skills** that share the same data:
+
+| Skill | What it does | How to invoke |
+|-------|-------------|---------------|
+| **Chief of Staff** | Full briefings, signal filtering, task dispatch, State Dashboard | "Run Chief of Staff", "daily briefing", "what did I miss?" |
+| **Captain's Log** | Quick standalone logging — one entry, no briefing overhead | "Log this: ...", "captain's log", `/captains-log` |
+
+**They work together but don't depend on each other.** You can use Captain's Log without ever setting up the Chief of Staff — it creates its own storage on first use. And when you do run the Chief of Staff, it automatically picks up all your log entries in its briefings.
+
+Think of it this way: Captain's Log is for capturing things in the moment. Chief of Staff is for making sense of everything later.
 
 ---
 
@@ -40,6 +56,8 @@ In Claude Code or Cowork, run:
 
 ## How to use it
 
+### Chief of Staff
+
 After installing, just say any of these in a session:
 
 - "Run Chief of Staff"
@@ -49,15 +67,25 @@ After installing, just say any of these in a session:
 
 The first time you use it, it walks you through a short setup: it asks about you, your projects, your priorities, and which note-taking platform you want to use. Then it's ready.
 
+### Captain's Log
+
+Say any of these at any time — no setup needed:
+
+- "Log this: shipped the new landing page"
+- "Captain's log: decided to switch to Stripe billing"
+- "Remember this: the API rate limit is 100/min"
+
+The skill figures out the type (Win, Decision, Learning, etc.) and project automatically. If it's your first time, it asks where to store the log (Notion or local folder) and sets it up on the spot.
+
 ---
 
 ## Requirements
 
 - **A note-taking platform** — one of Obsidian, Logseq, a plain markdown folder, or Notion. The skill picks for you based on a few questions.
-- **Email + calendar** connected (Gmail / Google Calendar, or Outlook / Microsoft 365).
+- **Email + calendar** connected (Gmail / Google Calendar, or Outlook / Microsoft 365) — for the Chief of Staff briefings.
 - **Optional**: a task tracker (Airtable, Notion, Linear, Asana), a messaging tool (Slack or Teams).
 
-It works with whatever subset of tools you have connected — three sources done well beats eight done poorly.
+Captain's Log only needs a note-taking platform. The full Chief of Staff benefits from email and calendar connections, but works with whatever subset of tools you have connected.
 
 ---
 
@@ -66,19 +94,22 @@ It works with whatever subset of tools you have connected — three sources done
 ```
 ai-chief-of-staff/
 ├── .claude-plugin/
-│   ├── plugin.json           ← plugin manifest
-│   └── marketplace.json      ← marketplace entry (for one-line install)
+│   ├── plugin.json
+│   └── marketplace.json
 ├── skills/
-│   └── chief-of-staff/
-│       ├── SKILL.md          ← main skill: briefings, setup, dispatch
-│       └── references/       ← detailed playbooks
-│           ├── signal-filters.md
-│           ├── notion-conventions.md
-│           ├── file-based-conventions.md
-│           ├── platform-choice.md
-│           ├── watcher-playbook.md
-│           ├── rollout-reminder.md
-│           └── backup-setup.md
+│   ├── chief-of-staff/
+│   │   ├── SKILL.md            ← full CoS: briefings, setup, dispatch
+│   │   └── references/
+│   │       ├── captains-log.md ← shared log format (both skills use this)
+│   │       ├── signal-filters.md
+│   │       ├── notion-conventions.md
+│   │       ├── file-based-conventions.md
+│   │       ├── platform-choice.md
+│   │       ├── watcher-playbook.md
+│   │       ├── rollout-reminder.md
+│   │       └── backup-setup.md
+│   └── captains-log/
+│       └── SKILL.md            ← standalone quick-log skill
 └── README.md
 ```
 
@@ -86,7 +117,7 @@ ai-chief-of-staff/
 
 ## Version
 
-**0.1.0** — first public release.
+**0.2.1** — added standalone Captain's Log skill.
 
 ---
 
