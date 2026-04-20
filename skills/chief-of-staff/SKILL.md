@@ -527,3 +527,33 @@ Read these when needed:
 - `references/backup-setup.md` — AI-assisted walkthrough for setting up end-to-end encrypted backup. Four paths for file-based vaults (Cryptomator, git-crypt, Proton Drive, Syncthing) and one path for Notion (weekly encrypted export). Load during Step S6 and whenever Step 1a's backup check fails.
 - `references/rollout-reminder.md` — The Pacer pattern: rollout nudge logic, verbatim phrasings, Express Lane, snooze, rollback, and the `rollout_reminder` storage schema. Load whenever a rollout nudge fires, the user expresses Express/snooze/rollback intent, or a contextual hook is detected.
 - `references/captains-log.md` — Captain's Log: mandatory structured personal log across all four platforms. Entry schema, platform-specific storage, setup behavior, trigger phrases, briefing inclusion, and recall queries. Load during Step S4.5 and whenever the user says "log this", "captain's log", "journal that", or "remember this".
+
+---
+
+## Stable Names — Do Not Change Without Migration
+
+The skill finds the user's existing data by looking for specific names. If a future update changes any of these, the skill will fail to reconnect and the user may think their data is gone. **Never rename these without adding a migration step that checks for the old name first.**
+
+### All platforms
+- Parent page / folder name: `Chief of Staff` (Notion page title) or `Chief-of-Staff/` (folder name)
+- State Dashboard: `State Dashboard` (Notion page title or `State Dashboard.md` filename)
+- Captain's Log database / folder: `Captain's Log` (Notion database title) or `Captain's Log/` (subfolder name)
+
+### Notion property names (on Captain's Log database)
+- `Title` (title), `Date` (date), `Type` (select), `Project` (multi_select), `Details` (rich text)
+
+### Notion property names (on State Dashboard — key fields the skill reads)
+- `Platform`, `Chief Name`, `setup_status`
+- `My Setup` section: `Name`, `Email`, `Role`, `Company`, `Alert Threshold`
+
+### File-based frontmatter keys (Obsidian / Logseq / plain markdown)
+- Captain's Log entries: `type: captains-log`, `date`, `log_type`, `project`, `cos: true`
+- State Dashboard: `platform`, `chief_name`, `setup_status`
+
+### Logseq block properties
+- Captain's Log: `type::`, `date::`, `log-type::`, `project::`, `cos::`
+
+### If you must rename something in a future version:
+1. Add a note at the top of SKILL.md: "v0.X migration: [old name] was renamed to [new name]"
+2. Update Step 0 to check for BOTH the old and new name, and silently rename if the old one is found
+3. Never just swap the name and assume it'll work — existing users will break
