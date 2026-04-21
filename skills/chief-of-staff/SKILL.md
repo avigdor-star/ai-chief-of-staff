@@ -52,6 +52,8 @@ Before anything else, locate the Chief of Staff area. It can be a local folder (
 
 7. Check the **Chief Name** field. Use this name when referring to yourself (e.g., "This is Zed — here's your morning briefing"). If no name is set, use "Chief of Staff."
 
+8. Check the **Personality** field. This controls the Chief's tone and communication style. Options: `Professional` (default), `Playful & lighthearted`, `Dry wit`, `Warm & encouraging`, or a custom description the user wrote themselves. If blank or not set, default to `Professional`. Adapt all user-facing language to match this personality throughout the session — word choice, humor level, energy — while keeping information accurate and tact intact. The personality applies to briefings, alerts, interactive responses, and any text the user sees. It does NOT change what the Chief does — only how it sounds.
+
 ---
 
 ## Step S — First-Time Setup
@@ -101,6 +103,14 @@ Ask these in plain language, one group at a time:
 - What company or team do you work for?
 - What do you want to call your Chief of Staff? Pick a name — you'll use it to summon it.
   (e.g., "Zed", "Friday", "Jarvis", or just "Chief".)
+- What personality should your Chief of Staff have? This sets the tone for how it talks to you.
+  Pick one or describe your own:
+  - **"Professional"** (default) — clear, direct, no frills
+  - **"Playful & lighthearted"** — fun energy, gentle humor, still tactful
+  - **"Dry wit"** — understated humor, a bit sarcastic
+  - **"Warm & encouraging"** — supportive, upbeat
+  - Or describe something else entirely — it's your Chief.
+  Store the answer in `State Dashboard → My Setup → Personality`.
 
 **Logseq sub-question (only ask if platform = `logseq`):**
 - "Logseq can store pages as plain folders (like Obsidian) OR as namespaces (Logseq's native style, using `___` as a separator). Which are you using? If you're not sure, say 'plain folders' — that's the most common and closest to Obsidian." Record the answer in `State Dashboard → My Setup → Logseq Placement` as either `folders` or `namespaces`. See `references/file-based-conventions.md` → "Platform Differences — Logseq" for what each means.
@@ -216,7 +226,7 @@ Then tell the user where Captain's Log lives and how to add entries:
 Fill in the State Dashboard using the answers from S2, following the conventions file for the chosen platform (`file-based-conventions.md` or `notion-conventions.md`).
 
 Fill in:
-- My Setup section (name, email, role, company, alert threshold, chief name, **platform — must match the pick from S1.5**, `setup_status` — set to `complete` at end of S6, or `complete-with-warning` if backup was deferred)
+- My Setup section (name, email, role, company, alert threshold, chief name, **personality**, **platform — must match the pick from S1.5**, `setup_status` — set to `complete` at end of S6, or `complete-with-warning` if backup was deferred)
 - Active Projects (from their project list)
 - High-Priority People (from their key people list)
 - This Week's Focus (from their priorities)
@@ -351,7 +361,11 @@ Scan these sources (whatever is connected):
 - Task tracker — tasks, deadlines, blockers
 - Messaging feed — cloud watcher posts since last briefing
 
-Apply signal filters (see `references/signal-filters.md`) and deliver this format:
+Apply signal filters (see `references/signal-filters.md`).
+
+**Filter Rules hard gate:** Before delivering ANY item to the user, check the State Dashboard's **Filter Rules** section. Every item in every briefing section (Top 3, Messages That Need You, Carryover, Recommended Actions, Risks/Blockers) must be checked against the Filter Rules list. If an item matches ANY filter rule — by sender name, domain, company, or topic — remove it. No exceptions. This also applies to carryover items from previous briefings: a filter rule added after a briefing was written still kills the item on the next pass.
+
+Then deliver this format:
 
 ```
 [DATE]
@@ -543,12 +557,12 @@ The skill finds the user's existing data by looking for specific names. If a fut
 - `Title` (title), `Date` (date), `Type` (select), `Project` (multi_select), `Details` (rich text)
 
 ### Notion property names (on State Dashboard — key fields the skill reads)
-- `Platform`, `Chief Name`, `setup_status`
-- `My Setup` section: `Name`, `Email`, `Role`, `Company`, `Alert Threshold`
+- `Platform`, `Chief Name`, `Personality`, `setup_status`
+- `My Setup` section: `Name`, `Email`, `Role`, `Company`, `Chief Name`, `Personality`, `Alert Threshold`
 
 ### File-based frontmatter keys (Obsidian / Logseq / plain markdown)
 - Captain's Log entries: `type: captains-log`, `date`, `log_type`, `project`, `cos: true`
-- State Dashboard: `platform`, `chief_name`, `setup_status`
+- State Dashboard: `platform`, `chief_name`, `personality`, `setup_status`
 
 ### Logseq block properties
 - Captain's Log: `type::`, `date::`, `log-type::`, `project::`, `cos::`

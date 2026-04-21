@@ -1,5 +1,19 @@
 # Signal Filters & Priority Ranking
 
+## User-Defined Filter Rules (highest priority — checked first)
+
+The State Dashboard contains a **Filter Rules** section where the user lists senders, domains,
+companies, and topics they NEVER want to see. These override everything else in this file.
+
+**Before applying any other filter logic, check every candidate item against the Filter Rules
+list.** If an item matches a filter rule — by sender name, email domain, company name, site
+name, or topic — drop it immediately. Do not surface it in any briefing section, do not carry
+it over from a previous briefing, do not include it in alerts. A filter rule added after an
+item was first surfaced still kills that item on the next pass.
+
+This check applies to ALL briefing sections: Top 3, Messages That Need You, Carryover,
+Recommended Actions, Risks/Blockers, and Watch List Check.
+
 ## Always Surface
 
 - Deadlines within 48 hours
