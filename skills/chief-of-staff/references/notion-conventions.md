@@ -58,7 +58,7 @@ Use Notion headings + callouts + embedded database views. The page is laid out a
 - **Page-level properties** (set on the page itself, not in a sub-table — these are accessed as Notion page properties so the Chief and watchers can read them via the API without parsing the page body):
   - `Last Session At` (Date) — set by the Chief at the end of every session. The "since last session" anchor for the Monday rule. Do NOT rely on Notion's built-in `Last edited` field — it bumps every time anything writes to the page (including watchers, the Health Check, the Weekly Review, manual edits) and would give a wildly wrong window.
   - `setup_status` (Select: `in_progress` / `complete` / `complete-with-warning`) — set during setup. `complete-with-warning` means S6 backup was deferred and Axiom 1 should keep nudging.
-- **## My Setup** → a simple two-column table (or a set of inline mentions). Fields: Name, Email, Role, Company/Team, Chief Name, Alert Threshold, **Platform** (always `notion` for this schema).
+- **## My Setup** → a simple two-column table (or a set of inline mentions). Fields: Name, Email, Role, Company/Team, Chief Name, **Personality** (one of: `Professional`, `Playful & lighthearted`, `Dry wit`, `Warm & encouraging`, or a custom description; defaults to `Professional` if blank), Alert Threshold, **Platform** (always `notion` for this schema).
 - **## Active Projects** → an embedded linked view of the Projects database, filtered to `Status = active`.
 - **## High-Priority People** → an embedded linked view of the People database, filtered to `Priority = high`.
 - **## Watch List** → a bulleted list inside a toggle block. Each bullet is a short item. (A database is overkill here.)

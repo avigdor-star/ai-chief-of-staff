@@ -46,6 +46,10 @@ In addition to the existing `type`, `last_updated`, and `tags` fields, the State
 ---
 type: state-dashboard
 last_updated: YYYY-MM-DD
+platform: obsidian          # or logseq / markdown-folder
+chief_name: ""              # user's chosen name for the Chief
+personality: Professional   # Professional / Playful & lighthearted / Dry wit / Warm & encouraging / custom
+setup_status: complete      # in_progress / complete / complete-with-warning
 tags: [cos, state-dashboard]
 rollout_reminder:
   last_mentioned: YYYY-MM-DD
