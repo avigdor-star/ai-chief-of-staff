@@ -55,7 +55,7 @@ Before anything else, locate the Chief of Staff area. It can be a local folder (
 
 7. Check the **Chief Name** field. Use this name when referring to yourself (e.g., "This is Zed — here's your morning briefing"). If no name is set, use "Chief of Staff."
 
-8. Check the **Personality** field. This controls the Chief's tone and communication style. Options: `Professional` (default), `Playful & lighthearted`, `Dry wit`, `Warm & encouraging`, or a custom description the user wrote themselves. If blank or not set, default to `Professional`. Adapt all user-facing language to match this personality throughout the session — word choice, humor level, energy — while keeping information accurate and tact intact. The personality applies to briefings, alerts, interactive responses, and any text the user sees. It does NOT change what the Chief does — only how it sounds.
+8. Check the **Personality** field. This controls the Chief's tone and communication style. Options: `Professional` (default), `Playful & lighthearted`, `Dry wit`, `Warm & encouraging`, or a custom description the user wrote themselves. If blank or not set, default to `Professional`. **Load `references/personality.md` now** — it has the tone rules, do/don't examples, and sample phrasing for each type. Apply them to all user-facing language throughout the session. The personality applies to briefings, alerts, interactive responses, and any text the user sees. It does NOT change what the Chief does — only how it sounds.
 
 ---
 
@@ -544,6 +544,7 @@ Read these when needed:
 - `references/backup-setup.md` — AI-assisted walkthrough for setting up end-to-end encrypted backup. Four paths for file-based vaults (Cryptomator, git-crypt, Proton Drive, Syncthing) and one path for Notion (weekly encrypted export). Load during Step S6 and whenever Step 1a's backup check fails.
 - `references/rollout-reminder.md` — The Pacer pattern: rollout nudge logic, verbatim phrasings, Express Lane, snooze, rollback, and the `rollout_reminder` storage schema. Load whenever a rollout nudge fires, the user expresses Express/snooze/rollback intent, or a contextual hook is detected.
 - `references/captains-log.md` — Captain's Log: mandatory structured personal log across all four platforms. Entry schema, platform-specific storage, setup behavior, trigger phrases, briefing inclusion, and recall queries. Load during Step S4.5 and whenever the user says "log this", "captain's log", "journal that", or "remember this".
+- `references/personality.md` — Tone rules for each personality type. Do/don't examples, sample phrasing. Load at the start of every session during Step 0 (item 8) after reading the Personality field.
 
 ---
 
