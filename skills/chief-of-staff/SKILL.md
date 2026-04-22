@@ -437,6 +437,19 @@ ROLLOUT NUDGE:
 - Render ONLY when ALL are true: next_eligible ≤ today, no Axiom 1 or 2 flag this session, nudge hasn't fired this session. Otherwise omit the section entirely (no empty header).
 ```
 
+**Proactive documentation (briefing).** While scanning sources, watch for things that
+should be documented somewhere in the system — not just the Captain's Log, but also
+project records, the State Dashboard, or the watch list. Examples: a completed
+deliverable (project status update), a new five-star review (log entry — win), a
+payment issue (watch list), a deadline that passed (project update).
+
+- **Obvious updates** → apply them automatically during housekeeping AND tell the user
+  what you did and why in the briefing itself. Example: "Updated the project record
+  for [project] — marked [task] as complete since the deploy went out yesterday."
+- **Judgment calls** → offer at the end of the briefing. Keep it to 3 items max:
+  "Spotted a few things that might be worth capturing — [short list with where each
+  would go]. Want me to handle any of these?"
+
 **ROLLOUT NUDGE behavior:** the Chief loads `references/rollout-reminder.md` and uses its decision logic (Section A) to determine whether to render the section, and its sentence templates to pick the exact wording. The section is omitted entirely when the render gate fails — never leave an empty header in the briefing. If the user responds to the nudge, the Chief handles the response per Sections C–L of the reference doc.
 
 **Low data day:** If nothing urgent, say "Light day — nothing urgent." Don't fill with filler.
@@ -474,6 +487,18 @@ After a helper finishes its work: update the State Dashboard and link the new do
 **Captain's Log entries:** "log this: …", "captain's log: …", "journal that …", "remember this …" → create a Captain's Log entry per `references/captains-log.md`. Infer Type and Project from context; tell the user what you picked so they can correct it. Confirm briefly after writing.
 
 **Captain's Log recall:** "what did I log about X", "show me my wins this month", "what did I decide about Y" → query Captain's Log with the appropriate filter and return Title + Date + Type + one-line snippet per entry. See `references/captains-log.md` → "Recall".
+
+**Proactive documentation (interactive).** During conversation, watch for moments that
+should be captured — decisions, completed tasks, new blockers, ideas, priority shifts.
+These can go to the Captain's Log, a project record, the State Dashboard, or the
+watch list depending on what fits.
+
+- **Obvious updates** → do them automatically and explain: "That changes the status of
+  [project] — I've updated the project record and noted [detail]. Also logged the
+  decision in your Captain's Log so you can find it later."
+- **Judgment calls** → offer once, explain your thinking: "That sounds like it could be
+  a new watch list item — want me to add it?" If the user declines, move on. Don't
+  offer more than twice per session to avoid nagging.
 
 **Status questions:** Answer from State Dashboard + Live Feed + messaging. Link to relevant files.
 **Watch list:** "Keep an eye on X" → add to Watch List in State Dashboard.
@@ -539,6 +564,12 @@ respond to check-in questions (recommend only), sync messaging to Live Feed.
 - Files are the memory, not the chat. All important info lives in the documents.
 - **Abrupt end safety net:** If the user says "gotta go" or stops responding, save the
   State Dashboard update above all else. Even a partial update beats none.
+- **End-of-session documentation sweep.** When the user signals they're wrapping up,
+  quickly review what happened in the session. Check for undocumented decisions,
+  completed tasks, status changes, or noteworthy moments. Apply any obvious updates
+  (project status, dashboard changes) automatically — list what you did. For judgment
+  calls, offer once briefly: "Before you go — [item] might be worth a log entry.
+  Want it?" For abrupt exits, skip the sweep — State Dashboard save comes first.
 
 ---
 
