@@ -16,11 +16,14 @@ Chief-of-Staff/
 ├── _index.md                   ← One-screen map of the vault. Read FIRST every session.
 ├── State Dashboard.md          ← Living status dashboard (the brain)
 ├── Live Feed.md                ← Running intake file
+├── Domains/                    ← One file per life domain (top of hierarchy)
+├── Departments/                ← One file per department (functional areas within a domain)
+├── Projects/                   ← One subfolder per active long-lived project
+├── Tasks/                      ← One file per task (actionable to-dos within a project)
 ├── Briefings/                  ← Daily briefings, weekly reviews
 ├── Research/                   ← Research outputs from sub-agents
 ├── Drafts/                     ← Email drafts, message drafts
 ├── Action-Plans/               ← Plans, breakdowns, decision docs
-├── Projects/                   ← One subfolder per active long-lived project
 ├── People/                     ← One file per high-priority person
 ├── Reference/                  ← Evergreen reference material — SOPs, playbooks, saved links
 └── Archive/                    ← Old briefings, state snapshots, completed items
@@ -130,13 +133,49 @@ tags: [cos, action-plan]
 ---
 ```
 
+### Domain file frontmatter (lives in `Domains/`):
+```yaml
+---
+type: domain
+description: [one-line summary of what this domain covers]
+status: [active | archived]
+tags: [cos, domain]
+---
+```
+
+### Department file frontmatter (lives in `Departments/`):
+```yaml
+---
+type: department
+domain: "[[Domains/domain-name]]"
+description: [what this department covers]
+status: [active | archived]
+tags: [cos, department]
+---
+```
+
 ### Project file frontmatter (lives in `Projects/[project-name]/`):
 ```yaml
 ---
 type: project
+department: "[[Departments/department-name]]"
 status: [active | paused | completed]
 started: YYYY-MM-DD
 tags: [cos, project, [project-slug]]
+---
+```
+
+### Task file frontmatter (lives in `Tasks/`):
+```yaml
+---
+type: task
+status: [to-do | in-progress | blocked | done | cancelled]
+priority: [urgent | high | medium | low]
+due: YYYY-MM-DD
+project: "[[Projects/project-name]]"
+goal: [optional — what outcome this task serves]
+waiting-on: [who or what is blocking this, if status = blocked]
+tags: [cos, task]
 ---
 ```
 
@@ -172,9 +211,12 @@ Use these tags consistently:
 | `research` | Research documents |
 | `draft` | Email/message drafts |
 | `action-plan` | Plans and breakdowns |
+| `domain` | Domain files in `Domains/` |
+| `department` | Department files in `Departments/` |
+| `project` | Project files in `Projects/` |
+| `task` | Task files in `Tasks/` |
 | `urgent` | Anything flagged as urgent |
 | `carried-over` | Items that carried over from a previous briefing |
-| `project` | Project files in `Projects/` |
 | `person` | Person files in `People/` |
 | `reference` | Reference docs in `Reference/` |
 | `index` | The `_index.md` file |
@@ -191,6 +233,8 @@ manually following references, even if not clickable.
 
 ### Required links:
 
+**The four-level hierarchy chain:** Each level links up to its parent via a wikilink in its frontmatter. A task links to its project, a project links to its department, a department links to its domain. This chain lets you trace any task back to its life domain.
+
 **In every briefing:**
 - Link to the State Dashboard: `[[State Dashboard]]`
 - Link to any research/drafts/action plans created during the session
@@ -205,6 +249,7 @@ manually following references, even if not clickable.
 - Link to the latest briefing
 - Link to active action plans
 - Link to relevant project files
+- Link to tasks that are due today or overdue
 
 **In the Live Feed:**
 - Link to related documents when clearing items (e.g., "Handled — see [[Drafts/YYYY-MM-DD-topic|draft]]")
@@ -229,7 +274,10 @@ Use the `[[path|display text]]` format when the file path is long — it keeps t
 - Action plans: `YYYY-MM-DD-[topic-slug].md`
 - State snapshots (in-vault): `state-snapshot-YYYY-MM-DD-HHMM.md` (append `-2`, `-3`, … if the exact timestamp already exists)
 - Feed archives: `feed-archive-YYYY-MM-DD.md`
+- Domain files: `Domains/[domain-slug].md` (e.g., `Domains/my-agency.md`, `Domains/personal.md`)
+- Department files: `Departments/[department-slug].md` (e.g., `Departments/marketing.md`, `Departments/health.md`)
 - Project folders: `Projects/[project-slug]/` (lowercase, hyphens, short)
+- Task files: `Tasks/[task-slug].md` (e.g., `Tasks/reply-to-vendor-quote.md`)
 - Person files: `People/First-Last.md`
 - Reference files: `Reference/[topic-slug].md`
 
@@ -360,11 +408,14 @@ tags: [cos, index]
 
 | Folder | Purpose | Filename pattern | Lifespan |
 |--------|---------|------------------|----------|
+| `Domains/` | One file per life domain (top of hierarchy) | `[domain-slug].md` | Ongoing |
+| `Departments/` | One file per department (functional areas within a domain) | `[department-slug].md` | Ongoing |
+| `Projects/` | One subfolder per active long-lived project | `Projects/[project-name]/[notes].md` | Until project ends → `Archive/` |
+| `Tasks/` | One file per actionable to-do (linked to a project) | `[task-slug].md` | Until done or cancelled → `Archive/` |
 | `Briefings/` | Daily briefings and weekly/monthly reviews | `YYYY-MM-DD-briefing.md`, `YYYY-MM-DD-weekly-review.md`, `YYYY-MM-monthly-cleanup.md` | Move to `Archive/` after 30 days |
 | `Research/` | Research outputs from sub-agents | `YYYY-MM-DD-[topic-slug].md` | Keep while relevant, then archive |
 | `Drafts/` | Email and message drafts awaiting send | `YYYY-MM-DD-[recipient-or-topic].md` | Delete once sent |
 | `Action-Plans/` | Plans, breakdowns, decision docs | `YYYY-MM-DD-[topic-slug].md` | Keep for the life of the project |
-| `Projects/` | One subfolder per active long-lived project | `Projects/[project-name]/[notes].md` | Until project ends → `Archive/` |
 | `People/` | One file per high-priority person | `[First-Last].md` | Ongoing |
 | `Reference/` | Evergreen reference material | `[topic-slug].md` | Ongoing |
 | `Archive/` | State Dashboard snapshots, old briefings, completed items | `state-snapshot-YYYY-MM-DD-HHMM.md`, `feed-archive-YYYY-MM-DD.md` | Keep indefinitely |
@@ -508,7 +559,36 @@ project:: [project name]
 tags:: cos, action-plan
 ```
 
-**Project / Person / Reference:** same field-for-field mapping — every YAML key becomes a `key:: value` line. Multi-value fields (like `tags`) are comma-separated.
+**Domain:**
+```
+type:: domain
+description:: [one-line summary]
+status:: active
+tags:: cos, domain
+```
+
+**Department:**
+```
+type:: department
+domain:: [[Domains/domain-name]]
+description:: [what this department covers]
+status:: active
+tags:: cos, department
+```
+
+**Task:**
+```
+type:: task
+status:: to-do
+priority:: medium
+due:: YYYY-MM-DD
+project:: [[Projects/project-name]]
+goal:: [optional]
+waiting-on:: [optional]
+tags:: cos, task
+```
+
+**Project / Person / Reference:** same field-for-field mapping — every YAML key becomes a `key:: value` line. Multi-value fields (like `tags`) are comma-separated. Projects now include a `department:: [[Departments/department-name]]` property.
 
 ### Page placement: folders → namespaces (or folders)
 

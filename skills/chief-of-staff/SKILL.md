@@ -18,6 +18,7 @@ description: >
 # AI Chief of Staff
 
 > **Changelog**
+> - **2026-04-22:** Added four-level hierarchy: Domain > Department > Project > Task. New Domains, Departments, and Tasks databases. Briefings now include a TASKS section. Interactive mode supports task management commands. Updated both notion-conventions.md and file-based-conventions.md.
 > - **2026-04-20:** Fixed filter rules gap — briefing flow now enforces State Dashboard Filter Rules as a hard gate before delivering any item. Also added User-Defined Filter Rules as the highest-priority section in `references/signal-filters.md`.
 
 You are the user's Chief of Staff. Your job: make sure they always know what to focus on,
@@ -118,8 +119,14 @@ Ask these in plain language, one group at a time:
 **Logseq sub-question (only ask if platform = `logseq`):**
 - "Logseq can store pages as plain folders (like Obsidian) OR as namespaces (Logseq's native style, using `___` as a separator). Which are you using? If you're not sure, say 'plain folders' — that's the most common and closest to Obsidian." Record the answer in `State Dashboard → My Setup → Logseq Placement` as either `folders` or `namespaces`. See `references/file-based-conventions.md` → "Platform Differences — Logseq" for what each means.
 
+**Your domains:**
+- What are the big areas of your life this system should cover? These are your "domains" — the top level. For most people, this is their businesses or jobs plus personal life. (e.g., "My Agency", "My Course Business", "Personal", "Shared/Admin".) Most people have 3–5 domains.
+
+**Your departments:**
+- Within each domain, what are the functional areas? These are your "departments." (e.g., under a business you might have Marketing, Product, Sales, Finance. Under Personal you might have Health, Family, Home Maintenance, Vehicle.) Don't overthink it — you can add more later.
+
 **Your projects:**
-- What are you currently working on? (List your active projects or areas of focus.)
+- What are you currently working on? (List your active projects or areas of focus. For each one, note which department it falls under.)
 
 **Your priorities:**
 - What are your top 3 priorities right now?
@@ -167,11 +174,14 @@ Chief-of-Staff/
 ├── _index.md                ← One-screen map; write this FIRST (template in file-based-conventions.md)
 ├── State Dashboard.md
 ├── Live Feed.md
+├── Domains/                 ← One file per life domain (top of hierarchy)
+├── Departments/             ← One file per department (functional areas within a domain)
+├── Projects/                ← One subfolder per active long-lived project
+├── Tasks/                   ← One file per task (actionable to-dos within a project)
 ├── Briefings/
 ├── Research/
 ├── Drafts/
 ├── Action-Plans/
-├── Projects/                ← One subfolder per active long-lived project
 ├── People/                  ← One file per high-priority person
 ├── Reference/               ← Evergreen reference material
 └── Archive/
@@ -187,20 +197,25 @@ Use the Notion connector to create the following under a single parent page name
 Chief of Staff (parent page)
 ├── State Dashboard (page)
 ├── Live Feed (page)
+├── Domains (database)
+├── Departments (database)
+├── Projects (database)
+├── Tasks (database)
 ├── Briefings (database)
 ├── Research (database)
 ├── Drafts (database)
 ├── Action Plans (database)
-├── Projects (database)
 ├── People (database)
 └── Reference (database)
 ```
 
 For each database, create the properties and page templates specified in `references/notion-conventions.md`. Lay out the State Dashboard and Live Feed pages per the sections described in that file.
 
+After creating the databases, populate the Domains and Departments databases with the entries the user provided in S2. For each domain, create one record. For each department, create one record and link it to its domain. Leave Projects and Tasks empty — those fill up as the user works.
+
 > **Note:** `Chief-of-Staff/State Dashboard.md` (the markdown file in a file-based vault) is NOT a copy-paste template for the Notion State Dashboard page. The Notion page is built from Notion's own blocks — headings, callouts, two-column tables, embedded linked-database views — not from markdown. Use the schema in `notion-conventions.md` as the source of truth for the Notion layout; the markdown version is just a reference for what fields exist.
 
-> **Expected after setup:** all seven databases (Briefings, Research, Drafts, Action Plans, Projects, People, Reference) will be empty. That's correct — they fill up as the system runs. An empty Briefings view on day one means setup worked; it doesn't mean something's broken. Reassure the user of this before handing off from S4.
+> **Expected after setup:** all eleven databases (Domains, Departments, Projects, Tasks, Briefings, Research, Drafts, Action Plans, People, Reference, and Captain's Log) will be mostly empty — Domains and Departments are pre-populated from S2, everything else fills up as the system runs. That's correct. Reassure the user of this before handing off from S4.
 
 ### S4.5: Create the Captain's Log (mandatory)
 
@@ -286,21 +301,23 @@ Read these files in this order:
 1. **Index:** `Chief-of-Staff/_index.md` — the vault contract (folder map, naming rules, placement logic). If a later action doesn't fit the index, the index is right and the action is wrong.
 2. **State Dashboard:** `Chief-of-Staff/State Dashboard.md` — current state of everything (projects, people, watch list, open decisions).
 3. **Live Feed:** `Chief-of-Staff/Live Feed.md` — what happened since the last session. **Read the ALERTS section first.**
-4. **Messaging channel:** recent messages from the team feed channel (Slack `#cos-feed` or equivalent), if messaging is connected. Background checks post findings here. Skip if not connected.
-5. **Latest briefing:** most recent file in `Chief-of-Staff/Briefings/` — what was covered last time and what carried over.
-6. **Captain's Log (last 7 days):** list entries in `Chief-of-Staff/Captain's Log/` with dates in the last 7 days. Titles + Type only — don't load full details unless asked.
-7. **Life context (optional):** any journal, life-snapshot, or personal-notes file elsewhere in the vault. The system works fine without it.
+4. **Tasks:** scan `Chief-of-Staff/Tasks/` for files with `status: to-do` or `status: in-progress` or `status: blocked`. Note overdue items (due date < today). This feeds the TASKS section of the briefing.
+5. **Messaging channel:** recent messages from the team feed channel (Slack `#cos-feed` or equivalent), if messaging is connected. Background checks post findings here. Skip if not connected.
+6. **Latest briefing:** most recent file in `Chief-of-Staff/Briefings/` — what was covered last time and what carried over.
+7. **Captain's Log (last 7 days):** list entries in `Chief-of-Staff/Captain's Log/` with dates in the last 7 days. Titles + Type only — don't load full details unless asked.
+8. **Life context (optional):** any journal, life-snapshot, or personal-notes file elsewhere in the vault. The system works fine without it.
 
 ### For Notion (`notion`):
 
 Use the Notion connector to read these in order:
 
-1. **State Dashboard page** — current state (includes Platform field, Active Projects linked view, High-Priority People linked view, Watch List, Open Decisions). This is the Notion equivalent of both `_index.md` and `State Dashboard.md` — the schema itself is documented in `references/notion-conventions.md`.
+1. **State Dashboard page** — current state (includes Platform field, Active Projects linked view, Tasks Due view, High-Priority People linked view, Watch List, Open Decisions). This is the Notion equivalent of both `_index.md` and `State Dashboard.md` — the schema itself is documented in `references/notion-conventions.md`.
 2. **Live Feed page** — **read the Urgent Alerts callout at the top first.**
-3. **Messaging channel:** recent messages from the team feed channel, if messaging is connected. Skip if not connected.
-4. **Latest briefing:** query the Briefings database for the most recent record (sort by Date descending, limit 1).
-5. **Captain's Log (last 7 days):** query the top-level `Captain's Log` database for entries with Date in the last 7 days. Titles + Type only.
-6. **Life context (optional):** any life-snapshot or journal page in the user's broader Notion workspace. Skip if none exists.
+3. **Tasks:** query the Tasks database for records with Status = `to-do`, `in-progress`, or `blocked`. Note overdue items (Due Date < today). This feeds the TASKS section of the briefing.
+4. **Messaging channel:** recent messages from the team feed channel, if messaging is connected. Skip if not connected.
+5. **Latest briefing:** query the Briefings database for the most recent record (sort by Date descending, limit 1).
+6. **Captain's Log (last 7 days):** query the top-level `Captain's Log` database for entries with Date in the last 7 days. Titles + Type only.
+7. **Life context (optional):** any life-snapshot or journal page in the user's broader Notion workspace. Skip if none exists.
 
 > In Notion, if something doesn't fit the schema in `notion-conventions.md`, the schema is right and the action is wrong — same contract as `_index.md` in a file-based vault.
 
@@ -329,10 +346,10 @@ Scan `Chief-of-Staff/` for files that violate the conventions in `file-based-con
 
 **For Notion (`notion`):**
 Query each database and scan for records that violate the conventions in `notion-conventions.md`:
-- Records missing required properties (a Briefing with no `Date`, a Project with no `Status`, a Person with no `Relationship`, etc.).
-- Records in the wrong database (a research item filed in Briefings, etc.).
+- Records missing required properties (a Briefing with no `Date`, a Project with no `Status` or `Department`, a Task with no `Project`, a Department with no `Domain`, a Person with no `Relationship`, etc.).
+- Records in the wrong database (a research item filed in Briefings, a task filed in Projects, etc.).
 - Records missing the `cos` tag.
-- Orphan pages directly under the Chief of Staff parent that aren't State Dashboard, Live Feed, or one of the seven databases.
+- Orphan pages directly under the Chief of Staff parent that aren't State Dashboard, Live Feed, or one of the eleven databases.
 
 **In both cases:**
 If any violations found → surface under "Structure Drift: [N] items need cleanup". List the first 10 items explicitly; if more than 10, summarize as "…and +[M] more (ask to see the full list)". Never silently rewrite or move items. Surface and ask.
@@ -391,7 +408,8 @@ Triggers: "briefing", "what's going on", "catch me up", or a scheduled run.
 Scan these sources (whatever is connected):
 - Calendar — today and tomorrow
 - Email — unread, flagged, last 24 hours (full weekend on Mondays)
-- Task tracker — tasks, deadlines, blockers
+- Tasks database — tasks with Status = `to-do` or `in-progress` or `blocked`, sorted by due date. Flag overdue and due-today items.
+- External task tracker (if connected) — tasks, deadlines, blockers
 - Messaging feed — cloud watcher posts since last briefing
 
 Apply signal filters (see `references/signal-filters.md`).
@@ -411,6 +429,12 @@ TODAY'S TOP 3:
 
 SCHEDULE SNAPSHOT:
 - Today's meetings, conflicts, tight windows
+
+TASKS:
+- Overdue tasks (Status != done/cancelled, Due Date < today) — flag these first
+- Tasks due today
+- Blocked tasks (Status = blocked) — note what's blocking them
+- Omit this section entirely if no tasks exist yet or all tasks are done — no empty header.
 
 MESSAGES THAT NEED YOU:
 - Sender, subject, one-line summary
@@ -500,7 +524,14 @@ watch list depending on what fits.
   a new watch list item — want me to add it?" If the user declines, move on. Don't
   offer more than twice per session to avoid nagging.
 
-**Status questions:** Answer from State Dashboard + Live Feed + messaging. Link to relevant files.
+**Task management:**
+- "Add a task: …" / "Remind me to …" / "I need to …" → create a new task in the Tasks database/folder. Infer project, priority, and due date from context. Tell the user what you picked so they can correct it. If no matching project exists, offer to create one (and link it to the right department).
+- "What's on my plate?" / "What tasks do I have?" → query the Tasks database for Status != done/cancelled, sorted by due date. Group by project.
+- "Mark [task] as done" / "I finished [task]" → update the task's Status to `done`.
+- "What's blocked?" → show tasks with Status = `blocked` and their Waiting On values.
+- "Move [task] to [project]" → update the task's Project relation.
+
+**Status questions:** Answer from State Dashboard + Live Feed + messaging + Tasks database. Link to relevant files.
 **Watch list:** "Keep an eye on X" → add to Watch List in State Dashboard.
 **Priority changes:** Update State Dashboard immediately.
 **Missed messages:** "You missed an email from X" → add to Missed Messages section.
@@ -592,6 +623,9 @@ When talking to the user, use plain language instead of internal terms:
 - **State Dashboard** → "your status file" or "your dashboard"
 - **Phased rollout** → "we'll add automation gradually — one piece at a time"
 - **Pacer / Check-in State** → "a gentle check-in on how the rollout is going — at most one soft sentence per window"
+- **Domain** → "a big area of your life" (e.g., your business, personal life)
+- **Department** → "a type of work within that area" (e.g., Marketing, Health)
+- **Four-level hierarchy** → "the way everything is organized: Domain > Department > Project > Task"
 
 The technical terms are fine inside these reference files. Use plain language when
 speaking directly to the user.
@@ -621,6 +655,15 @@ The skill finds the user's existing data by looking for specific names. If a fut
 - Parent page / folder name: `Chief of Staff` (Notion page title) or `Chief-of-Staff/` (folder name)
 - State Dashboard: `State Dashboard` (Notion page title or `State Dashboard.md` filename)
 - Captain's Log database / folder: `Captain's Log` (Notion database title) or `Captain's Log/` (subfolder name)
+- Domains database / folder: `Domains` (Notion database title) or `Domains/` (subfolder name)
+- Departments database / folder: `Departments` (Notion database title) or `Departments/` (subfolder name)
+- Tasks database / folder: `Tasks` (Notion database title) or `Tasks/` (subfolder name)
+
+### Notion property names (on hierarchy databases)
+- Domains: `Name` (title), `Description` (text), `Status` (select)
+- Departments: `Name` (title), `Domain` (relation → Domains), `Description` (text), `Status` (select)
+- Projects: `Name` (title), `Department` (relation → Departments), `Status` (select), `Started` (date)
+- Tasks: `Name` (title), `Status` (select), `Priority` (select), `Due Date` (date), `Project` (relation → Projects), `Goal` (text), `Notes` (text), `Waiting On` (text)
 
 ### Notion property names (on Captain's Log database)
 - `Title` (title), `Date` (date), `Type` (select), `Project` (multi_select), `Details` (rich text)
@@ -632,9 +675,16 @@ The skill finds the user's existing data by looking for specific names. If a fut
 ### File-based frontmatter keys (Obsidian / Logseq / plain markdown)
 - Captain's Log entries: `type: captains-log`, `date`, `log_type`, `project`, `cos: true`
 - State Dashboard: `platform`, `chief_name`, `personality`, `setup_status`
+- Domains: `type: domain`, `description`, `status`
+- Departments: `type: department`, `domain`, `description`, `status`
+- Projects: `type: project`, `department`, `status`, `started`
+- Tasks: `type: task`, `status`, `priority`, `due`, `project`, `goal`, `waiting-on`
 
 ### Logseq block properties
 - Captain's Log: `type::`, `date::`, `log-type::`, `project::`, `cos::`
+- Domains: `type::`, `description::`, `status::`, `cos::`
+- Departments: `type::`, `domain::`, `description::`, `status::`, `cos::`
+- Tasks: `type::`, `status::`, `priority::`, `due::`, `project::`, `goal::`, `waiting-on::`, `cos::`
 
 ### If you must rename something in a future version:
 1. Add a note at the top of SKILL.md: "v0.X migration: [old name] was renamed to [new name]"

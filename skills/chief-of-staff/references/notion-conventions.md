@@ -25,11 +25,14 @@ Chief of Staff                       ← parent page (top-level)
 ├── State Dashboard                  ← page (has page-level properties: Last Session At, setup_status)
 ├── Live Feed                        ← page
 ├── Snapshots                        ← page (holds state-snapshot-* page duplicates)
+├── 🌐 Domains                       ← database (top of hierarchy: life entities — e.g., Business A, Personal)
+├── 🏢 Departments                   ← database (functional areas within a domain — e.g., Marketing, Health)
+├── 🚀 Projects                      ← database (specific initiatives within a department)
+├── ✅ Tasks                          ← database (actionable to-dos within a project)
 ├── 📚 Briefings                     ← database
 ├── 🔍 Research                      ← database
 ├── ✉️ Drafts                         ← database
 ├── 📋 Action Plans                  ← database
-├── 🚀 Projects                      ← database
 ├── 👤 People                        ← database
 ├── 📎 Reference                     ← database
 └── 📁 Archive Views (optional)      ← page of linked views showing `Status = archived` across databases
@@ -59,7 +62,8 @@ Use Notion headings + callouts + embedded database views. The page is laid out a
   - `Last Session At` (Date) — set by the Chief at the end of every session. The "since last session" anchor for the Monday rule. Do NOT rely on Notion's built-in `Last edited` field — it bumps every time anything writes to the page (including watchers, the Health Check, the Weekly Review, manual edits) and would give a wildly wrong window.
   - `setup_status` (Select: `in_progress` / `complete` / `complete-with-warning`) — set during setup. `complete-with-warning` means S6 backup was deferred and Axiom 1 should keep nudging.
 - **## My Setup** → a simple two-column table (or a set of inline mentions). Fields: Name, Email, Role, Company/Team, Chief Name, **Personality** (one of: `Professional`, `Playful & lighthearted`, `Dry wit`, `Warm & encouraging`, or a custom description; defaults to `Professional` if blank), Alert Threshold, **Platform** (always `notion` for this schema).
-- **## Active Projects** → an embedded linked view of the Projects database, filtered to `Status = active`.
+- **## Active Projects** → an embedded linked view of the Projects database, filtered to `Status = active`, grouped by Department.
+- **## Tasks Due** → an embedded linked view of the Tasks database, filtered to `Status != done AND Status != cancelled`, sorted by Due Date ascending. Shows what's on the plate right now.
 - **## High-Priority People** → an embedded linked view of the People database, filtered to `Priority = high`.
 - **## Watch List** → a bulleted list inside a toggle block. Each bullet is a short item. (A database is overkill here.)
 - **## Missed Messages** → bulleted list inside a toggle.
@@ -213,13 +217,41 @@ Mirrors `Action-Plans/` folder.
 
 **Body:** Goal, Steps, Timeline, Dependencies / Risks.
 
+### Domains database
+
+Top of the four-level hierarchy. A domain is a distinct life entity — a business, "Personal," or a shared/admin bucket. Most users have 3–5 domains.
+
+| Property | Type | Purpose |
+|----------|------|---------|
+| Name | Title | Domain name (e.g., "My Agency", "Personal", "Shared") |
+| Description | Text | One-line summary of what this domain covers |
+| Status | Select | `active` / `archived` |
+| Tags | Multi-select | `cos`, `domain` |
+
+**Body:** Optional — notes, mission statement, or links to external resources for this domain.
+
+### Departments database
+
+Second level. A department is a functional area within a domain — the kind of work, not a specific initiative. Examples: Marketing, Product, Finance, Health, Family, Home Maintenance.
+
+| Property | Type | Purpose |
+|----------|------|---------|
+| Name | Title | Department name (e.g., "Marketing", "Health") |
+| Domain | Relation → Domains | Which domain this belongs to |
+| Description | Text | What this department covers |
+| Status | Select | `active` / `archived` |
+| Tags | Multi-select | `cos`, `department` |
+
+**Body:** Optional — ongoing notes, KPIs, or links relevant to this area.
+
 ### Projects database
 
-Mirrors `Projects/` folder.
+Mirrors `Projects/` folder. Third level — a specific initiative within a department.
 
 | Property | Type | Purpose |
 |----------|------|---------|
 | Name | Title | Project name |
+| Department | Relation → Departments | Which department this belongs to |
 | Status | Select | `active` / `paused` / `completed` |
 | Started | Date | Kickoff date |
 | Current Phase | Text | Short status |
@@ -231,6 +263,25 @@ Mirrors `Projects/` folder.
 | Related Briefings | Relation → Briefings (auto back-relation) | |
 
 **Body:** long-form notes, decisions, links to external files.
+
+### Tasks database
+
+Fourth level — the actual to-dos. Every task belongs to a project. Through that project, it inherits a department and domain.
+
+| Property | Type | Purpose |
+|----------|------|---------|
+| Name | Title | Task name — a clear action (e.g., "Reply to vendor quote", "Schedule annual physical") |
+| Status | Select | `to-do` / `in-progress` / `blocked` / `done` / `cancelled` |
+| Priority | Select | `urgent` / `high` / `medium` / `low` |
+| Due Date | Date | When it's due (optional — not every task has a deadline) |
+| Project | Relation → Projects | Which project this belongs to |
+| Goal | Text | Optional — what outcome this task serves (for alignment without adding a 5th hierarchy level) |
+| Notes | Text | Context, details, links |
+| Waiting On | Text | Who or what is blocking this (only relevant when Status = blocked) |
+| Tags | Multi-select | `cos`, `task`, plus any relevant tags |
+| Related Briefing | Relation → Briefings | The briefing that spawned this task (if applicable) |
+
+**Body:** Optional — checklists, sub-steps, or detailed notes. Use Notion's built-in checklist blocks for sub-dividing complex tasks rather than creating a 5th hierarchy level.
 
 ### People database
 
@@ -290,9 +341,12 @@ Same tag vocabulary as the file-based schema, implemented as a multi-select prop
 | `research` | Research database |
 | `draft` | Drafts database |
 | `action-plan` | Action Plans database |
+| `domain` | Domains database |
+| `department` | Departments database |
+| `project` | Projects database |
+| `task` | Tasks database |
 | `urgent` | Anything flagged urgent |
 | `carried-over` | Items carried from a previous briefing |
-| `project` | Projects database |
 | `person` | People database |
 | `reference` | Reference database |
 
@@ -306,9 +360,11 @@ The file-based schema uses `[[wikilink]]` syntax. In Notion, linking between rec
 
 **Examples of required links (all implemented via Relation properties, not inline text):**
 
+- **The four-level hierarchy chain:** Domain ← Department ← Project ← Task. Each level links up to its parent via a Relation property. A task inherits its department and domain through its project.
 - Every Briefing record has a Relation to the Projects it touched and the People referenced.
 - Every Research / Draft / Action Plan has a Relation to the Briefing that spawned it.
-- The State Dashboard page uses embedded linked-database views to show Active Projects and High-Priority People.
+- Tasks can link to the Briefing that spawned them (optional).
+- The State Dashboard page uses embedded linked-database views to show Active Projects, High-Priority People, and Tasks due today or overdue.
 - The Live Feed page references specific Briefings or Drafts by mentioning them with the `@` operator (type `@briefing-name` and Notion autocompletes a clickable link).
 
 **Inline `@mentions`** are the Notion equivalent of in-body `[[wikilinks]]`. Use these in free-text sections (like State Dashboard's Watch List) where creating a formal Relation is overkill.
@@ -347,6 +403,10 @@ Notion encrypts your data in transit (HTTPS) and at rest (on their servers), but
 
 Notion supports page templates — reusable structures that pre-fill the body of a new record. Create these inside each database during S4:
 
+- **Domain template** — blank body with a placeholder: "Describe what this domain covers."
+- **Department template** — blank body with a placeholder: "Describe what this department handles."
+- **Project template** — pre-fills headings: Overview, Current Status, Key Decisions, Next Steps.
+- **Task template** — blank body with a checklist block placeholder for sub-steps.
 - **Briefing template** — pre-fills headings: Yesterday's Carryover, Today's Top 3, Schedule Snapshot, Messages That Need You, Watch List Check, Risks / Blockers, Recommended Actions.
 - **Research template** — Question, Findings, Recommendation.
 - **Action Plan template** — Goal, Steps, Timeline, Dependencies / Risks.
