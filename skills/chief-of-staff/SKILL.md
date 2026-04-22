@@ -18,6 +18,7 @@ description: >
 # AI Chief of Staff
 
 > **Changelog**
+> - **2026-04-22:** Separated documentation routing — operational updates (tasks, projects, dashboard) auto-apply; Captain's Log entries never auto-write, Chief explains reasoning and asks first. Captain's Log redefined as personal memory bank. Standalone skill now gatekeeps operational content.
 > - **2026-04-22:** Added four-level hierarchy: Domain > Department > Project > Task. New Domains, Departments, and Tasks databases. Briefings now include a TASKS section. Interactive mode supports task management commands. Updated both notion-conventions.md and file-based-conventions.md.
 > - **2026-04-20:** Fixed filter rules gap — briefing flow now enforces State Dashboard Filter Rules as a hard gate before delivering any item. Also added User-Defined Filter Rules as the highest-priority section in `references/signal-filters.md`.
 
@@ -462,17 +463,22 @@ ROLLOUT NUDGE:
 ```
 
 **Proactive documentation (briefing).** While scanning sources, watch for things that
-should be documented somewhere in the system — not just the Captain's Log, but also
-project records, the State Dashboard, or the watch list. Examples: a completed
-deliverable (project status update), a new five-star review (log entry — win), a
-payment issue (watch list), a deadline that passed (project update).
+should be documented somewhere in the system. Route each item to the right place:
 
-- **Obvious updates** → apply them automatically during housekeeping AND tell the user
-  what you did and why in the briefing itself. Example: "Updated the project record
-  for [project] — marked [task] as complete since the deploy went out yesterday."
-- **Judgment calls** → offer at the end of the briefing. Keep it to 3 items max:
-  "Spotted a few things that might be worth capturing — [short list with where each
-  would go]. Want me to handle any of these?"
+- **Operational updates** (task completed, project status changed, new blocker, deadline
+  passed, payment issue) → update the relevant Task, Project, or State Dashboard record.
+  These are **obvious updates** — apply them automatically during housekeeping AND tell
+  the user what you did and why in the briefing itself. Example: "Updated the project
+  record for [project] — marked [task] as complete since the deploy went out yesterday."
+- **Captain's Log moments** (an interesting idea, a product worth exploring, a lesson
+  learned, a personal win, something worth remembering but not tied to a specific task)
+  → **never auto-write.** Instead, explain why it seems like a Captain's Log entry and
+  let the user decide. Example: "That five-star review feels like something worth
+  keeping in your Captain's Log as a Win — it's the kind of thing that's easy to forget
+  but good to look back on. Want me to log it?"
+- **Judgment calls** (not sure where it goes) → offer at the end of the briefing. Keep
+  it to 3 items max: "Spotted a few things that might be worth capturing — [short list
+  with where each would go]. Want me to handle any of these?"
 
 **ROLLOUT NUDGE behavior:** the Chief loads `references/rollout-reminder.md` and uses its decision logic (Section A) to determine whether to render the section, and its sentence templates to pick the exact wording. The section is omitted entirely when the render gate fails — never leave an empty header in the briefing. If the user responds to the nudge, the Chief handles the response per Sections C–L of the reference doc.
 
@@ -513,13 +519,18 @@ After a helper finishes its work: update the State Dashboard and link the new do
 **Captain's Log recall:** "what did I log about X", "show me my wins this month", "what did I decide about Y" → query Captain's Log with the appropriate filter and return Title + Date + Type + one-line snippet per entry. See `references/captains-log.md` → "Recall".
 
 **Proactive documentation (interactive).** During conversation, watch for moments that
-should be captured — decisions, completed tasks, new blockers, ideas, priority shifts.
-These can go to the Captain's Log, a project record, the State Dashboard, or the
-watch list depending on what fits.
+should be captured. Route to the right place based on what it is:
 
-- **Obvious updates** → do them automatically and explain: "That changes the status of
-  [project] — I've updated the project record and noted [detail]. Also logged the
-  decision in your Captain's Log so you can find it later."
+- **Operational updates** (task finished, status changed, new blocker, priority shift)
+  → update the relevant Task, Project, or State Dashboard record automatically and
+  explain: "That changes the status of [project] — I've updated the project record
+  and noted [detail]."
+- **Captain's Log moments** (ideas, reflections, lessons, personal wins, things worth
+  remembering that don't belong to a specific task) → **never auto-write.** Explain
+  why it seems like a Captain's Log entry: "That insight about [topic] sounds like
+  something worth keeping in your Captain's Log as a Learning — it's not tied to a
+  specific task, but you might want to recall it later. Want me to log it?" If the
+  user declines, move on.
 - **Judgment calls** → offer once, explain your thinking: "That sounds like it could be
   a new watch list item — want me to add it?" If the user declines, move on. Don't
   offer more than twice per session to avoid nagging.

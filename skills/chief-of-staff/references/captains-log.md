@@ -1,6 +1,10 @@
 # Captain's Log
 
-A structured personal log for the user — milestones, decisions, wins, learnings, problems, and ideas. Whatever they want to be able to recall later.
+A personal memory bank — ideas, reflections, wins, lessons, and things worth
+remembering that don't belong to a specific task or project status update. If it has a
+status, a deadline, or a next step, it goes in the operational databases (Tasks,
+Projects, Departments). If it's something you'd tell a journal but not a task list, it
+goes here.
 
 **Captain's Log is mandatory.** Every Chief of Staff setup creates it during S4, regardless of platform.
 
@@ -17,33 +21,51 @@ The user creates entries by saying things like:
 
 Treat any of these as a trigger to create one new Captain's Log entry. Confirm the entry briefly after writing.
 
-**Do not proactively log on the user's behalf** (with one exception — see "Setup behavior" below). Captain's Log is the user's voice. Don't dump briefings, State Dashboard updates, or alert noise in here — those have their own homes.
+**Do not proactively log on the user's behalf** (with one exception — see "Setup behavior" below). Captain's Log is the user's voice. Don't dump briefings, State Dashboard updates, task completions, or status changes in here — those belong in the operational databases.
 
 ---
 
-## Proactive prompting — ASK, don't write
+## Proactive prompting — EXPLAIN and ASK, don't write
 
-The agent should not silently write entries — but it SHOULD proactively ask whenever something log-worthy happens. The user can't be expected to remember to log. That's the agent's job. Writing without permission is forbidden; asking permission is expected.
+The agent should not silently write entries — but it SHOULD proactively suggest the
+Captain's Log whenever something log-worthy happens. The user can't be expected to
+remember to log. That's the agent's job. Writing without permission is forbidden;
+suggesting with a reason is expected.
 
-**When to ask** (whenever any of these happens during a session, ask "Want me to log this?" in one short sentence):
+**What belongs in the Captain's Log** (things that don't fit in Tasks, Projects, or the Dashboard):
 
-- A release, publish, deploy, or ship (code, plugin, skill, page — anything)
-- A decision the user makes and states (pricing, platform, hiring, strategy, direction)
-- A win (new client, funding, launch success, positive feedback)
-- A learning or insight — the user says "huh, interesting" or reflects on a lesson
-- A problem noted — bug, blocker, issue to remember
-- An idea to not-forget — "we should do X later"
-- Completion of a meaningful piece of work the agent helped with
+- An interesting idea or product worth exploring later
+- A personal win worth remembering (positive feedback, a milestone moment)
+- A lesson learned or insight — something that changed how you think
+- A "note to future me" — context you'll want months from now
+- A memory worth storing — a conversation, an experience, a turning point
+- A problem or pattern you noticed that isn't tied to a specific task
 
-**How to ask:** one line, at the end of the relevant response. Suggest Type and Project so "yes" is enough:
+**What does NOT belong** (route these to operational databases instead):
 
-- "Want me to log this as a Milestone under Chief of Staff?"
-- "Sounds like a decision worth logging — want me to add it to Captain's Log?"
-- "Log this as a Learning tagged [project]?"
+- Task completions → update the Task record
+- Project status changes → update the Project record
+- New blockers or deadlines → Task or Watch List
+- Priority shifts → State Dashboard
 
-If the user says yes → create the entry. If they say no or skip past it → don't push, don't ask again for the same thing.
+**How to suggest:** explain WHY it seems like a Captain's Log entry so the user can
+judge for themselves. State what type you'd file it under and your reasoning:
 
-**Don't ask for trivial things.** Routine back-and-forth, small tasks, and pure conversation don't need a log prompt. Use judgment — would the user want to recall this in 6 months? If yes, ask. If no, stay silent.
+- "That insight about [topic] sounds like something worth keeping in your Captain's Log
+  as a Learning — it's not tied to a task, but you might want to recall how you
+  arrived at that thinking. Want me to log it?"
+- "That five-star review feels like a Win worth capturing — easy to forget, good to
+  look back on. Captain's Log?"
+- "You mentioned [product] being interesting — that could be an Idea entry in your
+  Captain's Log so it doesn't get lost. Want me to note it?"
+
+If the user says yes → create the entry. If they say no or skip past it → don't push,
+don't ask again for the same thing. If the user pushes back and wants it documented
+differently (as a task, project note, etc.), help them route it to the right place.
+
+**Don't suggest for trivial things.** Routine back-and-forth, small tasks, and pure
+conversation don't need a log prompt. Use judgment — would the user want to recall
+this in 6 months? If yes, suggest. If no, stay silent.
 
 ---
 

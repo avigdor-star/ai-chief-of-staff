@@ -6,6 +6,11 @@ Changes to the skill during beta development. Newest first.
 
 ## 2026-04-22
 
+### Separated documentation routing: operational databases vs. Captain's Log
+- **Files:** skills/chief-of-staff/SKILL.md, skills/chief-of-staff/references/captains-log.md, skills/captains-log/SKILL.md
+- **What:** Proactive documentation now routes items to the right place — task/project/dashboard updates happen automatically, but Captain's Log entries are never auto-written. The Chief explains why something seems like a log entry and lets the user decide. Captain's Log redefined as a "personal memory bank" for ideas, reflections, wins, and lessons — not operational status updates. Standalone Captain's Log skill now acts as a gatekeeper: if content looks operational, it suggests routing through the Chief instead.
+- **Why:** Previous instructions were contradictory — the main skill said to auto-write Captain's Log entries, while the reference file said never to write without permission. Also, there was no clear line between what belongs in the log vs. operational databases. The new routing logic resolves both issues.
+
 ### Added four-level hierarchy: Domain > Department > Project > Task
 - **Files:** skills/chief-of-staff/SKILL.md, references/notion-conventions.md, references/file-based-conventions.md
 - **What:** New organizational hierarchy covering all of life — not just work. Domains (life entities like businesses, personal), Departments (functional areas within a domain), Projects (specific initiatives), Tasks (actionable to-dos). Three new databases/folders added: Domains, Departments, Tasks. Projects updated with Department relation. Briefings now include a TASKS section. Interactive mode supports task commands ("add a task", "what's on my plate", "mark X as done"). Setup asks users to define their domains and departments.
