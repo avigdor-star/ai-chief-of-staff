@@ -6,7 +6,7 @@ Changes to the skill during beta development. Newest first.
 
 ## 2026-04-21
 
-### Added "standard procedures" rule to Decision Rules
+### Added Stay on Track check (Step 1b)
 - **File:** skills/chief-of-staff/SKILL.md
-- **What:** New bullet requiring the use of standard, documented methods — no hacks or shortcuts. Includes a 3-tier escalation: try the right way → read official docs → tell the user if still unclear.
-- **Why:** During an Airtable/Notion task, a shortcut was used (bare ID instead of full URL for a relation field) and it failed. No existing rule prevented this. Now there is one.
+- **What:** New Step 1b checks the user's calendar at session start and periodically during long sessions. If the user is in a Cowork session during a non-CoS calendar block, gives a gentle, personality-matched nudge.
+- **Why:** Helps users stay aware of their schedule without being pushy — they can acknowledge and continue.

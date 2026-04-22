@@ -348,6 +348,36 @@ If any violations found → surface under "Structure Drift: [N] items need clean
 4. At the end, report: "[N] fixed. [M] still need your input (listed below)." Leave the rest for the user.
 5. Never delete a file or database record during Structure Drift cleanup — only add/move/rename.
 
+### Step 1b — Stay on Track Check (run every session)
+
+After loading context and running Axiom checks, check the user's calendar for the
+current time.
+
+1. **Pull the current calendar block.** Query the user's calendar for events happening
+   right now (start ≤ now < end). If no calendar connector is available, skip this check
+   entirely.
+
+2. **Evaluate the block.** If there IS an active calendar event, check whether it looks
+   like Chief of Staff / planning / Cowork work (e.g., the title contains "Zed", "Chief
+   of Staff", "CoS", "planning", "admin", or the Chief Name from My Setup). If it does,
+   or if the calendar is empty, proceed normally — no nudge needed.
+
+3. **Nudge if off-track.** If the current calendar block is something else (filming,
+   editing, a meeting, client work, etc.), give the user a gentle, personality-matched
+   heads-up before continuing. Example:
+   - Playful: "Hey — your calendar says 'Edit videos' until noon. Just making sure
+     you meant to hop in here."
+   - Professional: "Note: your calendar shows 'Edit videos' until 12:00 PM. Proceed,
+     or head back to that?"
+   - The user can acknowledge and continue — don't block them or ask again for the same
+     calendar block.
+
+4. **Periodic re-check.** Track the calendar block that was active when the session
+   started (store the event title and end time in working memory). On each subsequent
+   interaction, if the current time has crossed into a NEW calendar block that isn't
+   Chief of Staff work, nudge again once for the new block. Don't re-nudge for a block
+   the user has already acknowledged.
+
 ---
 
 ## Step 2 — Determine Mode
