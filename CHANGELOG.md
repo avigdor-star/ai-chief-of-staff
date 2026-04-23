@@ -6,6 +6,11 @@ Changes to the skill during beta development. Newest first.
 
 ## 2026-04-22
 
+### Section-by-section briefing flow (replaces the full-dump format)
+- **File:** skills/chief-of-staff/SKILL.md
+- **What:** Mode A (Briefing) no longer dumps the entire briefing at once. Sections are now delivered one at a time, strictly linear, with a tailored question after each section and a "Can we move on to the next section?" gate before advancing. Mid-section actions get queued ("Queued for after the brief") and run as a batch after the final section. Empty sections are announced ("Messages: nothing") except for Rollout Nudge, which stays silent when not eligible. Alerts section is now system-level only (backup, structure drift, connector failures) — personal watch-list items stay in the Watch List section. Backup alert now proposes a specific free calendar slot and offers to book it. "Recent Log" section removed. New section order: Alerts → Carryover → Schedule → Top 3 → Tasks → Messages → Missed Message Check → Watch List → Risks/Blockers → Recommended Actions → Rollout Nudge.
+- **Why:** A single-dump briefing gave the user no room to think through items or act on them before the next section loaded — it was a brain-dump, not a briefing. Drip delivery with per-section questions makes the briefing a working session instead of a wall of text. Queueing mid-section actions keeps momentum while still letting the user act on things in context.
+
 ### Separated documentation routing: operational databases vs. Captain's Log
 - **Files:** skills/chief-of-staff/SKILL.md, skills/chief-of-staff/references/captains-log.md, skills/captains-log/SKILL.md
 - **What:** Proactive documentation now routes items to the right place — task/project/dashboard updates happen automatically, but Captain's Log entries are never auto-written. The Chief explains why something seems like a log entry and lets the user decide. Captain's Log redefined as a "personal memory bank" for ideas, reflections, wins, and lessons — not operational status updates. Standalone Captain's Log skill now acts as a gatekeeper: if content looks operational, it suggests routing through the Chief instead.

@@ -18,6 +18,7 @@ description: >
 # AI Chief of Staff
 
 > **Changelog**
+> - **2026-04-22:** Section-by-section briefing flow — Mode A now delivers the brief one section at a time with a tailored question after each and a "move on?" gate. Mid-section actions queue for a batch run after the final section. Alerts section is system-level only. Recent Log removed. New order: Alerts → Carryover → Schedule → Top 3 → Tasks → Messages → Missed Message Check → Watch List → Risks/Blockers → Recommended Actions → Rollout Nudge.
 > - **2026-04-22:** Separated documentation routing — operational updates (tasks, projects, dashboard) auto-apply; Captain's Log entries never auto-write, Chief explains reasoning and asks first. Captain's Log redefined as personal memory bank. Standalone skill now gatekeeps operational content.
 > - **2026-04-22:** Added four-level hierarchy: Domain > Department > Project > Task. New Domains, Departments, and Tasks databases. Briefings now include a TASKS section. Interactive mode supports task management commands. Updated both notion-conventions.md and file-based-conventions.md.
 > - **2026-04-20:** Fixed filter rules gap — briefing flow now enforces State Dashboard Filter Rules as a hard gate before delivering any item. Also added User-Defined Filter Rules as the highest-priority section in `references/signal-filters.md`.
@@ -417,50 +418,55 @@ Apply signal filters (see `references/signal-filters.md`).
 
 **Filter Rules hard gate:** Before delivering ANY item to the user, check the State Dashboard's **Filter Rules** section. Every item in every briefing section (Top 3, Messages That Need You, Carryover, Recommended Actions, Risks/Blockers) must be checked against the Filter Rules list. If an item matches ANY filter rule — by sender name, domain, company, or topic — remove it. No exceptions. This also applies to carryover items from previous briefings: a filter rule added after a briefing was written still kills the item on the next pass.
 
-Then deliver this format:
+Then deliver the briefing section by section — one at a time, strictly linear. After each section, ask the section's tailored question. If the user responds with an action (e.g., "draft a reply to X", "mark Y done", "schedule it"), respond "Queued for after the brief" and continue. If the user's answer is "no" / "nothing" / similar, ask: **"Can we move on to the next section?"** Only advance on a yes. Never skip sections, never jump ahead on user request.
 
-```
-[DATE]
+If a section has no content, announce it (e.g., "Messages: nothing") and still ask the move-on question.
 
-YESTERDAY'S CARRYOVER:
-- Unfinished items from the last briefing
+Use the same structure morning and afternoon.
 
-TODAY'S TOP 3:
-- Ranked by: deadline > people waiting > revenue > strategic > other
+**Section order and tailored questions:**
 
-SCHEDULE SNAPSHOT:
-- Today's meetings, conflicts, tight windows
+1. **Alerts** — system-level flags only: backup (Axiom 1), structure drift (Axiom 2), connector failures. Do NOT put personal watch-list items here.
+   - If backup is flagged: pull free slots from the user's calendar and propose a specific time (e.g., "You're free tomorrow 2–3 PM. Want me to book a backup setup block then?"). If the user says yes, create the calendar event.
+   - Q: "Want me to handle any of these?"
 
-TASKS:
-- Overdue tasks (Status != done/cancelled, Due Date < today) — flag these first
-- Tasks due today
-- Blocked tasks (Status = blocked) — note what's blocking them
-- Omit this section entirely if no tasks exist yet or all tasks are done — no empty header.
+2. **Carryover** — unfinished items from the last briefing.
+   - Q: "Still relevant, or drop them?"
 
-MESSAGES THAT NEED YOU:
-- Sender, subject, one-line summary
+3. **Schedule** — today's and tomorrow's calendar. Meetings, conflicts, tight windows.
+   - Q: "Anything to add or move?"
 
-WATCH LIST CHECK:
-- Items from the State Dashboard watch list needing attention today
+4. **Top 3** — the three most important items for today, ranked by: deadline > people waiting > revenue > strategic > other.
+   - Q: "Want me to kick any of these off?"
 
-MISSED MESSAGE CHECK:
-- Review the Missed Messages section; adjust filtering for those patterns
+5. **Tasks** — tasks from the Tasks database with Status = to-do, in-progress, or blocked. Flag overdue first, then due-today, then blocked.
+   - Q: "Any status changes?"
 
-RISKS / BLOCKERS:
-- Things that could become problems if ignored
+6. **Messages** — emails, DMs, or items that need the user's reply or decision. Sender, subject, one-line summary each.
+   - Q: "Want me to draft a reply to any of these?"
 
-RECOMMENDED ACTIONS:
-- Specific: "Reply to [person] about [topic]" not "Consider following up"
+7. **Missed Message Check** — review the State Dashboard's Missed Messages section. Confirm past corrections are still honored and surface any patterns the user has flagged multiple times (candidate for a permanent filter rule).
+   - Q: "Anything I'm still filtering that you want surfaced?"
 
-RECENT LOG (last 7 days):
-- [Date] [Type] — Title
-- [Date] [Type] — Title
-- (Titles only — user can open the entry for full details. Omit this section entirely if no entries in the last 7 days — no empty header.)
+8. **Watch List** — items from the State Dashboard's Watch List needing attention today. Personal commitments, one-off items the user asked Zed to keep an eye on.
+   - Q: "Any updates on these?"
 
-ROLLOUT NUDGE:
-- [One soft sentence per the Pacer pattern — see `references/rollout-reminder.md`]
-- Render ONLY when ALL are true: next_eligible ≤ today, no Axiom 1 or 2 flag this session, nudge hasn't fired this session. Otherwise omit the section entirely (no empty header).
-```
+9. **Risks / Blockers** — things that could become problems if ignored (deadlines drifting, budget caps nearing, someone waiting too long).
+   - Q: "Anything you want to act on?"
+
+10. **Recommended Actions** — specific next steps. "Reply to [person] about [topic]" not "consider following up."
+    - Q: "Want me to queue any of these?"
+
+11. **Rollout Nudge** — one soft sentence per the Pacer pattern (see `references/rollout-reminder.md`). Render ONLY when ALL are true: next_eligible ≤ today, no Axiom 1 or 2 flag this session, nudge hasn't fired this session. If the render gate fails, skip this section silently (don't even announce it as empty).
+    - Q (only if rendered): "Want me to start on that now?"
+
+**Mid-section actions — queueing rules:**
+- User gives an actionable response inside a section (draft, schedule, update, reply) → Zed says "Queued for after the brief" and moves on to the move-on prompt.
+- User asks a quick clarifying question about the item → Zed answers briefly, then re-asks the section's tailored question.
+- User says "yes, but not now" or similar → Zed adds to the queue and notes "deferred — you can review after the brief."
+
+**After the final section, run the queue:**
+Work through each queued action one at a time. Confirm each one before executing (per the overall "never take action without approval" rule). When all queued items are handled or deferred, close out and run housekeeping (see below).
 
 **Proactive documentation (briefing).** While scanning sources, watch for things that
 should be documented somewhere in the system. Route each item to the right place:
