@@ -4,6 +4,15 @@ Changes to the skill during beta development. Newest first.
 
 ---
 
+## 2026-04-23
+
+### Documentation routing fix — Captain's Log is fallback, not default
+- **Files:** skills/captains-log/SKILL.md, skills/chief-of-staff/SKILL.md
+- **What:** Tightened the captains-log skill's triggers so it ONLY fires on explicit Captain's Log phrases ("captain's log", "add to my captain's log", /captains-log). Generic documentation phrases ("log this", "document this", "record this", "note this down", "remember this", "journal that", "journal this", "capture this") no longer trigger the captains-log skill — they now go to the Chief of Staff, which applies a strict routing rule: try operational first (Task, Project, Department, Watch List, State Dashboard) → if unsure, ALWAYS ask (offer 2–3 specific options) → Captain's Log only as an explicit fallback or user pick. Explicit "captain's log" phrases still bypass routing and write directly.
+- **Why:** Captain's Log was becoming the default dump for anything the user asked to "document" or "log," even when the content belonged in a task, project, or dashboard record. The two trigger surfaces (captains-log skill description + Chief of Staff skill description) both grabbed generic phrases, and the Mode B instruction explicitly mapped "log this" → Captain's Log entry. Users lost the distinction between "update my work records" and "write in my personal diary." New behavior: operational records are the primary destination; Captain's Log is the explicit, intentional diary.
+
+---
+
 ## 2026-04-22
 
 ### Section-by-section briefing flow (replaces the full-dump format)

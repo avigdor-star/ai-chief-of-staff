@@ -1,13 +1,16 @@
 ---
 name: captains-log
 description: >
-  Quickly log an entry to the Captain's Log — milestones, decisions, wins, learnings, problems,
-  and ideas. Use this skill whenever the user says "log this", "captain's log", "add to my log",
-  "log entry", "captains log", "journal that", "remember this", or invokes /captains-log.
-  Also trigger when the user finishes a task and says something like "note this down", "record this",
-  or "add this to my log". Works independently of the Chief of Staff skill — no briefing or
-  setup required. Entries are stored in the same format the Chief of Staff reads, so everything
-  stays connected.
+  Add an entry to the Captain's Log — a personal diary for ideas, reflections, wins,
+  lessons, problems, and moments worth remembering that don't belong to a specific task
+  or project. ONLY trigger on EXPLICIT Captain's Log phrases: "captain's log",
+  "captains log", "add to my captain's log", "captain's log entry", or when the user
+  invokes /captains-log. Do NOT trigger on generic documentation phrases like "log this",
+  "document this", "note this down", "record this", "journal that", "journal this",
+  "remember this", or "add this to my log" — those are ambiguous and should go to the
+  Chief of Staff skill so it can route the content to the right place (task, project,
+  dashboard, or — as an explicit fallback — the Captain's Log). Works independently of
+  the Chief of Staff skill; entries use the same schema the CoS reads.
 ---
 
 # Captain's Log — Quick Entry

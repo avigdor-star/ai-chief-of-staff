@@ -9,15 +9,20 @@ description: >
   status, wants to dispatch a task to a sub-agent, or says things like "keep an eye on X",
   "did I miss anything", "what's urgent", or "catch me up." Also trigger when the user
   invokes the Chief of Staff by its custom name (stored in State Dashboard → My Setup →
-  Chief Name). Also trigger on Captain's Log entries — "log this", "captain's log",
-  "journal that", "remember this" — which add a structured entry to the user's log.
-  This skill is the central nervous system — if the user's request involves
-  operational awareness, this skill should handle it.
+  Chief Name). Also trigger on generic documentation phrases — "log this",
+  "document this", "record this", "note this down", "journal this", "journal that",
+  "remember this", "capture this" — which are ambiguous and need ROUTING, not
+  auto-logging. The Chief of Staff places such content in the right destination
+  (task, project, dashboard, or — only as an explicit fallback or by user choice —
+  the Captain's Log). Explicit "captain's log" phrases are handled by the standalone
+  captains-log skill, not here. This skill is the central nervous system — if the
+  user's request involves operational awareness, this skill should handle it.
 ---
 
 # AI Chief of Staff
 
 > **Changelog**
+> - **2026-04-23:** Documentation routing fix — Captain's Log is now the last-resort fallback, not the default. The captains-log skill only triggers on explicit "captain's log" phrases. Generic documentation phrases ("log this", "document this", "remember this", etc.) are handled by the Chief of Staff, which routes content to operational records (task/project/dashboard) first and always asks when unsure.
 > - **2026-04-22:** Section-by-section briefing flow — Mode A now delivers the brief one section at a time with a tailored question after each and a "move on?" gate. Mid-section actions queue for a batch run after the final section. Alerts section is system-level only. Recent Log removed. New order: Alerts → Carryover → Schedule → Top 3 → Tasks → Messages → Missed Message Check → Watch List → Risks/Blockers → Recommended Actions → Rollout Nudge.
 > - **2026-04-22:** Separated documentation routing — operational updates (tasks, projects, dashboard) auto-apply; Captain's Log entries never auto-write, Chief explains reasoning and asks first. Captain's Log redefined as personal memory bank. Standalone skill now gatekeeps operational content.
 > - **2026-04-22:** Added four-level hierarchy: Domain > Department > Project > Task. New Domains, Departments, and Tasks databases. Briefings now include a TASKS section. Interactive mode supports task management commands. Updated both notion-conventions.md and file-based-conventions.md.
@@ -520,7 +525,31 @@ Triggers: any task, question, or request that isn't a briefing.
 
 After a helper finishes its work: update the State Dashboard and link the new document back to the briefing/project that requested it. File-based vaults use `[[wikilinks]]`; Notion uses Relation properties.
 
-**Captain's Log entries:** "log this: …", "captain's log: …", "journal that …", "remember this …" → create a Captain's Log entry per `references/captains-log.md`. Infer Type and Project from context; tell the user what you picked so they can correct it. Confirm briefly after writing.
+**Documentation routing — where does this go?**
+When the user says a generic documentation phrase like "log this", "document this",
+"record this", "note this down", "capture this", "journal this", "journal that", or
+"remember this", DO NOT default to the Captain's Log. The Captain's Log is a personal
+diary — the last-resort home for content that doesn't fit anywhere else. Route the
+content in this strict order:
+
+1. **Try operational first.** Can this be a Task update, Project note, Department
+   note, Watch List item, or State Dashboard field? If yes, propose placing it there.
+   Example: "Sounds like this belongs as a note on the [Project X] record. Want me to
+   add it there?"
+2. **If unsure — ALWAYS ask.** If you can't confidently place the content in a
+   specific task/project/dashboard location, ALWAYS ask the user where it should go.
+   Never guess. Offer 2–3 specific options (including Captain's Log as one of them).
+   Example: "Not sure where this fits — is it a note on Project X, a new task under
+   [Department], or a Captain's Log entry?"
+3. **Captain's Log is the explicit fallback, not the default.** Only write to the
+   Captain's Log when (a) the user explicitly says "captain's log: …", "add to my
+   captain's log", or similar explicit journal phrasing, or (b) the user picks
+   Captain's Log from the options you offered in step 2.
+
+**Explicit Captain's Log phrases bypass routing.** If the user says "captain's log: …"
+or "add to my captain's log …", write directly per `references/captains-log.md`. No
+routing needed — the user has been explicit. Infer Type and Project from context; tell
+the user what you picked so they can correct it. Confirm briefly after writing.
 
 **Captain's Log recall:** "what did I log about X", "show me my wins this month", "what did I decide about Y" → query Captain's Log with the appropriate filter and return Title + Date + Type + one-line snippet per entry. See `references/captains-log.md` → "Recall".
 
