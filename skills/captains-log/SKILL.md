@@ -81,39 +81,40 @@ If the conversation context makes the project or type obvious, use it. Don't ove
 
 ---
 
-## Step 2.5 — Check if this actually belongs here
+## Step 2.5 — Cross-check before logging
 
-After parsing, check whether the content sounds like it belongs in the operational
-databases instead of the Captain's Log.
+After parsing, **actively search** the user's operational databases before writing anything.
+Do not rely on whether the content "sounds" operational — check the data.
 
-**Signs it might be operational (not a log entry):**
+### Required searches
 
-- It describes a task being completed → should be a Task status update
-- It's a status change on a project → should be a Project record update
-- It's a new blocker or deadline → should be a Task or Watch List item
-- It's a priority shift → should be a State Dashboard update
+Run these searches using keywords extracted from the parsed entry (e.g., for a car mileage
+entry, search "car", "mileage", "odometer", "vehicle"):
 
-If the content looks operational, don't just log it — tell the user:
+1. **Tasks database** — search for any open task related to the entry's subject.
+2. **State Dashboard** — search for any Watch List item, calendar anchor, or active
+   project note that references the same subject.
 
-> "This sounds like it might be better documented as a [task update / project status
-> change / etc.] through your Chief of Staff, rather than a Captain's Log entry. That
-> way it stays connected to [project] and shows up in your briefings. Want me to hand
-> this to the Chief instead, or log it here anyway?"
+If either search returns a match, **stop and tell the user** before logging:
+
+> "I found a related [task / watch list item / etc.]: **[title of the match]**. This
+> might be better handled as a [task update / status change / etc.] through your Chief
+> of Staff so it stays connected. Want me to route it there, or log it here anyway?"
 
 If the user says "log it anyway" → proceed to Step 3.
 If the user wants the Chief to handle it → tell them to invoke the Chief of Staff
 (by its name or by saying "briefing") and reference what they wanted documented.
 
-**Signs it belongs in the Captain's Log (proceed normally):**
+### Skip conditions
 
-- It's an idea, reflection, or "note to future me"
-- It's a personal win or lesson learned
-- It's a product, tool, or concept worth exploring later
-- It's a memory or experience worth preserving
-- It doesn't have a clear next step or status
+Skip the search only if:
+- The user has no Chief of Staff set up (no Tasks database or State Dashboard exists).
+- The entry is explicitly abstract — a pure idea, philosophical reflection, or personal
+  feeling with no possible operational connection.
 
-When in doubt, log it — the Captain's Log is meant to catch things that would
-otherwise be lost.
+### If no matches found
+
+Proceed to Step 3 normally. The entry belongs in the Captain's Log.
 
 ---
 

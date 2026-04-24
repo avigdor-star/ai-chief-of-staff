@@ -4,6 +4,15 @@ Changes to the skill during beta development. Newest first.
 
 ---
 
+## 2026-04-24
+
+### Captain's Log Step 2.5 upgraded from passive check to active cross-reference
+- **File:** skills/captains-log/SKILL.md
+- **What:** Replaced the "does this sound operational?" gut check with a mandatory search of the Tasks database and State Dashboard before logging any entry. If a related task or watch list item is found, the skill now stops and asks the user before writing to the log.
+- **Why:** A mileage entry was logged straight to the Captain's Log even though a matching task and State Dashboard watch item existed. The old Step 2.5 relied on whether the message "sounded" operational, which missed connections that only show up by searching the data.
+
+---
+
 ## 2026-04-23
 
 ### Fix: Snapshot now explicitly moved into Snapshots subpage after duplication
