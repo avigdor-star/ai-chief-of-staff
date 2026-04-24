@@ -92,7 +92,7 @@ Updates to this table are made in place by the Chief of Staff during sessions, f
 
 ### Snapshot rule
 
-Before any edit to the State Dashboard, duplicate the page and name the duplicate `state-snapshot-YYYY-MM-DD-HHMM` (24-hour local time). Hour+minute is required so multi-session days don't collide. Move the duplicate into the **Snapshots** subpage under the Chief of Staff parent (created during S4 — see "Snapshot destination" below). This is the Notion equivalent of copying `State Dashboard.md` to `Archive/state-snapshot-YYYY-MM-DD-HHMM.md`.
+Before any edit to the State Dashboard, duplicate the page via `notion-duplicate-page` and name the duplicate `state-snapshot-YYYY-MM-DD-HHMM` (24-hour local time). Hour+minute is required so multi-session days don't collide. The duplicate will land as a sibling of the original (directly under the Chief of Staff parent) — this is expected. Immediately after duplicating, use `notion-move-pages` to move the duplicate into the **Snapshots** subpage (created during S4 — see "Snapshot destination" below). Both steps are required; the snapshot is not complete until the move succeeds. This is the Notion equivalent of copying `State Dashboard.md` to `Archive/state-snapshot-YYYY-MM-DD-HHMM.md`.
 
 If a snapshot with the exact same timestamp already exists, append `-2`, `-3`, etc.
 
@@ -108,6 +108,8 @@ Chief of Staff
 ├── 📚 Briefings
 ├── ... (other databases)
 ```
+
+**Important:** `notion-duplicate-page` does not place the duplicate here automatically — it lands as a sibling of the original page. After every duplication, you must call `notion-move-pages` to reparent the snapshot into this subpage. This is a two-step process, not one.
 
 ### Snapshot restoration
 

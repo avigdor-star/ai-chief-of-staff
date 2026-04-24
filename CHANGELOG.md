@@ -6,6 +6,11 @@ Changes to the skill during beta development. Newest first.
 
 ## 2026-04-23
 
+### Fix: Snapshot now explicitly moved into Snapshots subpage after duplication
+- **Files:** skills/chief-of-staff/SKILL.md, skills/chief-of-staff/references/notion-conventions.md
+- **What:** Added an explicit `notion-move-pages` step after every `notion-duplicate-page` call in the snapshot procedure. The Notion API drops duplicates as siblings of the original page, not inside the Snapshots subpage. The skill now treats snapshot creation as a two-step process (duplicate → move) and documents this in the Mode A housekeeping block, the Snapshot rule, and the Snapshot destination section.
+- **Why:** Snapshots were piling up as loose pages directly under the Chief of Staff parent instead of landing inside the Snapshots subpage where they belong.
+
 ### "File cabinet" introduced as user-facing term for the four-level hierarchy
 - **Files:** skills/chief-of-staff/SKILL.md, skills/chief-of-staff/references/notion-conventions.md, skills/chief-of-staff/references/file-based-conventions.md
 - **What:** Updated the glossary, the smart nesting helper intro, and the linking-chain descriptions in both convention files to lead with "file cabinet" instead of "four-level hierarchy." Parentheticals like "(four levels)" or "(four-level hierarchy)" kept inline so readers still see the structural definition. Underlying hierarchy (Domain > Department > Project > Task) and the technical vocabulary are unchanged.
