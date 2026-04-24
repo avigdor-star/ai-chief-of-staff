@@ -1,6 +1,6 @@
 {
   "name": "ai-chief-of-staff",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "AI Chief of Staff — daily operations, prioritization, task dispatch, and situational awareness. Checks email, calendar, and task tracker, surfaces what matters, and maintains a living knowledge base of projects, people, and priorities.",
   "author": {
     "name": "Avigdor"

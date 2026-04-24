@@ -9,14 +9,14 @@ description: >
   status, wants to dispatch a task to a sub-agent, or says things like "keep an eye on X",
   "did I miss anything", "what's urgent", or "catch me up." Also trigger when the user
   invokes the Chief of Staff by its custom name (stored in State Dashboard → My Setup →
-  Chief Name). Also trigger on generic documentation phrases — "log this",
-  "document this", "record this", "note this down", "journal this", "journal that",
-  "remember this", "capture this" — which are ambiguous and need ROUTING, not
-  auto-logging. The Chief of Staff places such content in the right destination
-  (task, project, dashboard, or — only as an explicit fallback or by user choice —
-  the Captain's Log). Explicit "captain's log" phrases are handled by the standalone
-  captains-log skill, not here. This skill is the central nervous system — if the
-  user's request involves operational awareness, this skill should handle it.
+  Chief Name). Quick documentation phrases — "log this", "document this", "record this",
+  "note this down", "journal this", "journal that", "remember this", "capture this",
+  "captain's log", etc. — are handled by the standalone log skill, NOT here. The log
+  skill routes content to the right place (task update, project note, dashboard, or
+  Captain's Log). When the Chief of Staff is already running, it uses its own internal
+  routing logic to place documentation; but it is not the skill that should trigger
+  from a cold start on documentation phrases. This skill is the central nervous system —
+  if the user's request involves operational awareness, this skill should handle it.
 ---
 
 # AI Chief of Staff
@@ -244,7 +244,7 @@ Create the structure per the chosen platform:
 
 Then tell the user where Captain's Log lives and how to add entries:
 
-> "Captain's Log is set up. To add an entry, just say 'log this: …' or 'captain's log: …' and I'll write it down. I already added one entry to mark today's setup."
+> "Captain's Log is set up. To log something, just say 'log this: …' or 'captain's log: …' and I'll figure out where it belongs — task update, project note, or the Captain's Log — and write it there. I already added one entry to mark today's setup."
 
 ### S5: Populate the State Dashboard
 
@@ -526,11 +526,17 @@ Triggers: any task, question, or request that isn't a briefing.
 After a helper finishes its work: update the State Dashboard and link the new document back to the briefing/project that requested it. File-based vaults use `[[wikilinks]]`; Notion uses Relation properties.
 
 **Documentation routing — where does this go?**
-When the user says a generic documentation phrase like "log this", "document this",
+This routing logic applies WHILE THE CHIEF OF STAFF IS ALREADY RUNNING — during a
+briefing, an interactive session, or any time the Chief has been loaded. For cold
+starts (a fresh message that starts with "log this", "document this", "captain's
+log", etc.), the standalone log skill handles the routing instead and this block
+doesn't run.
+
+When the user says a documentation phrase like "log this", "document this",
 "record this", "note this down", "capture this", "journal this", "journal that", or
-"remember this", DO NOT default to the Captain's Log. The Captain's Log is a personal
-diary — the last-resort home for content that doesn't fit anywhere else. Route the
-content in this strict order:
+"remember this" while the Chief is active, DO NOT default to the Captain's Log. The
+Captain's Log is a personal diary — the last-resort home for content that doesn't
+fit anywhere else. Route the content in this strict order:
 
 1. **Try operational first.** Can this be a Task update, Project note, Department
    note, Watch List item, or State Dashboard field? If yes, propose placing it there.
@@ -707,7 +713,7 @@ Read these when needed:
 - `references/notion-conventions.md` — How to structure documents in Notion: databases, pages, properties, relations, templates.
 - `references/backup-setup.md` — AI-assisted walkthrough for setting up end-to-end encrypted backup. Four paths for file-based vaults (Cryptomator, git-crypt, Proton Drive, Syncthing) and one path for Notion (weekly encrypted export). Load during Step S6 and whenever Step 1a's backup check fails.
 - `references/rollout-reminder.md` — The Pacer pattern: rollout nudge logic, verbatim phrasings, Express Lane, snooze, rollback, and the `rollout_reminder` storage schema. Load whenever a rollout nudge fires, the user expresses Express/snooze/rollback intent, or a contextual hook is detected.
-- `references/captains-log.md` — Captain's Log: mandatory structured personal log across all four platforms. Entry schema, platform-specific storage, setup behavior, trigger phrases, briefing inclusion, and recall queries. Load during Step S4.5 and whenever the user says "log this", "captain's log", "journal that", or "remember this".
+- `references/captains-log.md` — Captain's Log: mandatory structured personal log across all four platforms. Entry schema, platform-specific storage, setup behavior, trigger phrases, briefing inclusion, and recall queries. Shared reference — used by both this Chief of Staff skill and the standalone `log` skill. Load during Step S4.5 and whenever the Chief is handling Captain's Log content (writing a new entry or recall queries).
 - `references/personality.md` — Tone rules for each personality type. Do/don't examples, sample phrasing. Load at the start of every session during Step 0 (item 8) after reading the Personality field.
 
 ---

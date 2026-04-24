@@ -12,14 +12,23 @@ goes here.
 
 ## When to log
 
-The user creates entries by saying things like:
+The user signals they want to document something by saying things like:
 
 - "Log this: ..."
 - "Captain's Log: ..."
 - "Journal that ..."
 - "Remember this ..."
+- "Document this ..."
+- "Note this down ..."
 
-Treat any of these as a trigger to create one new Captain's Log entry. Confirm the entry briefly after writing.
+These phrases trigger the standalone **log skill**, which routes content to the right
+destination (task update, project note, State Dashboard, or — when the content is
+reflective or personal — a new Captain's Log entry). Not everything the user says
+"log this" to ends up in the Captain's Log; only content that fits the "personal memory
+bank" description below. When the Chief of Staff is already running, it applies the
+same routing logic using its internal rules.
+
+When a Captain's Log entry IS the right destination, confirm briefly after writing.
 
 **Do not proactively log on the user's behalf** (with one exception — see "Setup behavior" below). Captain's Log is the user's voice. Don't dump briefings, State Dashboard updates, task completions, or status changes in here — those belong in the operational databases.
 

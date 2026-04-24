@@ -9,7 +9,7 @@ Works with **Claude Code** and **Cowork** (Claude Desktop).
 ## What it does
 
 - **Daily briefing** — what you missed, what's due today, who's waiting on you, what to do next.
-- **Captain's Log** — a quick-access personal log for milestones, decisions, wins, learnings, problems, and ideas. Works on its own OR through the Chief of Staff.
+- **Log** — a quick documentation router. Say "log this: …" or "captain's log: …" and it figures out where the content belongs (task update, project note, State Dashboard, or Captain's Log) and writes it there. Works on its own OR through the Chief of Staff.
 - **Signal filtering** — skips newsletters and bot noise, surfaces real people and real deadlines.
 - **State Dashboard** — one source of truth for projects, people, open loops, and watch items.
 - **Phased rollout** — starts manual, adds desktop "watchers" when you're ready, moves to cloud routines once you trust it.
@@ -27,11 +27,11 @@ This plugin gives you **two skills** that share the same data:
 | Skill | What it does | How to invoke |
 |-------|-------------|---------------|
 | **Chief of Staff** | Full briefings, signal filtering, task dispatch, State Dashboard | "Run Chief of Staff", "daily briefing", "what did I miss?" |
-| **Captain's Log** | Quick standalone logging — one entry, no briefing overhead | "Log this: ...", "captain's log", `/captains-log` |
+| **Log** | Quick documentation router — parses what you said, routes to the right place (task, project, dashboard, or Captain's Log), writes it there | "Log this: ...", "captain's log: …", "document this", "remember this" |
 
-**They work together but don't depend on each other.** You can use Captain's Log without ever setting up the Chief of Staff — it creates its own storage on first use. And when you do run the Chief of Staff, it automatically picks up all your log entries in its briefings.
+**They work together but don't depend on each other.** You can use Log without ever setting up the Chief of Staff — it creates a Captain's Log on first use. And when you do run the Chief of Staff, it automatically picks up anything Log wrote to operational records or the Captain's Log.
 
-Think of it this way: Captain's Log is for capturing things in the moment. Chief of Staff is for making sense of everything later.
+Think of it this way: Log is for capturing things in the moment. Chief of Staff is for making sense of everything later.
 
 ---
 
@@ -67,15 +67,16 @@ After installing, just say any of these in a session:
 
 The first time you use it, it walks you through a short setup: it asks about you, your projects, your priorities, and which note-taking platform you want to use. Then it's ready.
 
-### Captain's Log
+### Log
 
 Say any of these at any time — no setup needed:
 
 - "Log this: shipped the new landing page"
 - "Captain's log: decided to switch to Stripe billing"
-- "Remember this: the API rate limit is 100/min"
+- "Document this: the API rate limit is 100/min"
+- "Remember this: the offer closes Friday"
 
-The skill figures out the type (Win, Decision, Learning, etc.) and project automatically. If it's your first time, it asks where to store the log (Notion or local folder) and sets it up on the spot.
+The skill parses what you said, searches your tasks and State Dashboard for related items, and routes the content to the right place. If it's a task update, it updates the task. If it's reflective or personal, it goes in the Captain's Log (Win, Decision, Learning, etc. — type and project inferred automatically). If it's unclear, it asks. First time? It sets up a Captain's Log on the spot.
 
 ---
 
@@ -100,7 +101,7 @@ ai-chief-of-staff/
 │   ├── chief-of-staff/
 │   │   ├── SKILL.md            ← full CoS: briefings, setup, dispatch
 │   │   └── references/
-│   │       ├── captains-log.md ← shared log format (both skills use this)
+│   │       ├── captains-log.md ← shared Captain's Log format (both skills use this)
 │   │       ├── signal-filters.md
 │   │       ├── notion-conventions.md
 │   │       ├── file-based-conventions.md
@@ -108,8 +109,8 @@ ai-chief-of-staff/
 │   │       ├── watcher-playbook.md
 │   │       ├── rollout-reminder.md
 │   │       └── backup-setup.md
-│   └── captains-log/
-│       └── SKILL.md            ← standalone quick-log skill
+│   └── log/
+│       └── SKILL.md            ← standalone quick documentation router
 └── README.md
 ```
 
@@ -117,7 +118,7 @@ ai-chief-of-staff/
 
 ## Version
 
-**0.2.1** — added standalone Captain's Log skill.
+**0.3.1** — replaced standalone Captain's Log skill with the **Log** skill, a lightweight documentation router that picks the right destination (task, project, dashboard, or Captain's Log) instead of always writing to the Log. The Captain's Log database itself is unchanged.
 
 ---
 
