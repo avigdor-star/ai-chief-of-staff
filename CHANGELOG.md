@@ -6,6 +6,21 @@ Changes to the skill during beta development. Newest first.
 
 ## 2026-04-23
 
+### "File cabinet" introduced as user-facing term for the four-level hierarchy
+- **Files:** skills/chief-of-staff/SKILL.md, skills/chief-of-staff/references/notion-conventions.md, skills/chief-of-staff/references/file-based-conventions.md
+- **What:** Updated the glossary, the smart nesting helper intro, and the linking-chain descriptions in both convention files to lead with "file cabinet" instead of "four-level hierarchy." Parentheticals like "(four levels)" or "(four-level hierarchy)" kept inline so readers still see the structural definition. Underlying hierarchy (Domain > Department > Project > Task) and the technical vocabulary are unchanged.
+- **Why:** "File cabinet" is a plainer mental model than "four-level hierarchy." Easier to talk about, easier to remember, friendlier for non-technical users. The technical phrasing stays available as a definition, but "file cabinet" becomes the primary concept name.
+
+### Smart nesting (file-cabinet helper) added
+- **File:** skills/chief-of-staff/SKILL.md
+- **What:** New Mode B sub-section teaches the Chief to infer record type (task / project / department / domain) from user language, then offer to nest the record in the four-level hierarchy — auto-creating missing parents if the user wants, skipping the nesting entirely if they don't. A dangling record is allowed; it still works and surfaces in briefings. New Mode A section ("File Cabinet Check," section 11, before Rollout Nudge) runs a soft nudge when unnested records exist — framed as a helpful offer, never a violation.
+- **Why:** Tasks arrive in all shapes. "I need diapers" is a task; "I want to build a car maintenance system" is a project. The Chief should read intent and propose the right home — without forcing structure. Dangling records get noticed later via a gentle nudge, not flagged at session start.
+
+### Tag vocabulary removed — skill goes silent on tags
+- **Files:** skills/chief-of-staff/SKILL.md, skills/chief-of-staff/references/file-based-conventions.md, skills/chief-of-staff/references/notion-conventions.md
+- **What:** Removed all prescribed tag vocabulary. Deleted the required `tags: [cos, ...]` lines from every frontmatter template, dropped the Tags row from every Notion database schema, removed the stand-alone Tags sections in both reference files, and pulled the `cos` tag checks out of the Axiom 2 structure drift check. The Tags property on Notion databases and the `tags:` field in YAML frontmatter still exist as user-owned space — the skill just stops dictating vocabulary.
+- **Why:** Tagging is user-specific. Different users have different mental models and needs. The skill should be agnostic about tags so users can build whatever vocabulary fits their work.
+
 ### Documentation routing fix — Captain's Log is fallback, not default
 - **Files:** skills/captains-log/SKILL.md, skills/chief-of-staff/SKILL.md
 - **What:** Tightened the captains-log skill's triggers so it ONLY fires on explicit Captain's Log phrases ("captain's log", "add to my captain's log", /captains-log). Generic documentation phrases ("log this", "document this", "record this", "note this down", "remember this", "journal that", "journal this", "capture this") no longer trigger the captains-log skill — they now go to the Chief of Staff, which applies a strict routing rule: try operational first (Task, Project, Department, Watch List, State Dashboard) → if unsure, ALWAYS ask (offer 2–3 specific options) → Captain's Log only as an explicit fallback or user pick. Explicit "captain's log" phrases still bypass routing and write directly.

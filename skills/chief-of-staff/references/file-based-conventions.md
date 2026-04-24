@@ -53,7 +53,6 @@ platform: obsidian          # or logseq / markdown-folder
 chief_name: ""              # user's chosen name for the Chief
 personality: Professional   # Professional / Playful & lighthearted / Dry wit / Warm & encouraging / custom
 setup_status: complete      # in_progress / complete / complete-with-warning
-tags: [cos, state-dashboard]
 rollout_reminder:
   last_mentioned: YYYY-MM-DD
   last_contextual_mention: YYYY-MM-DD   # or leave blank / null
@@ -86,7 +85,6 @@ Multi-value fields (`express_installed`) are comma-separated, matching the exist
 ---
 type: briefing
 date: YYYY-MM-DD
-tags: [cos, briefing]
 sources: [email, calendar, tasks]
 ---
 ```
@@ -97,7 +95,6 @@ sources: [email, calendar, tasks]
 type: weekly-review
 date: YYYY-MM-DD
 week: YYYY-WNN
-tags: [cos, weekly-review]
 ---
 ```
 
@@ -108,7 +105,6 @@ type: research
 date: YYYY-MM-DD
 topic: [topic description]
 requested-by: [briefing/interactive session]
-tags: [cos, research]
 ---
 ```
 
@@ -119,7 +115,6 @@ type: draft
 date: YYYY-MM-DD
 for: [recipient name]
 regarding: [subject]
-tags: [cos, draft, email]
 ---
 ```
 
@@ -129,7 +124,6 @@ tags: [cos, draft, email]
 type: action-plan
 date: YYYY-MM-DD
 project: [project name]
-tags: [cos, action-plan]
 ---
 ```
 
@@ -139,7 +133,6 @@ tags: [cos, action-plan]
 type: domain
 description: [one-line summary of what this domain covers]
 status: [active | archived]
-tags: [cos, domain]
 ---
 ```
 
@@ -150,7 +143,6 @@ type: department
 domain: "[[Domains/domain-name]]"
 description: [what this department covers]
 status: [active | archived]
-tags: [cos, department]
 ---
 ```
 
@@ -161,7 +153,6 @@ type: project
 department: "[[Departments/department-name]]"
 status: [active | paused | completed]
 started: YYYY-MM-DD
-tags: [cos, project, [project-slug]]
 ---
 ```
 
@@ -175,7 +166,6 @@ due: YYYY-MM-DD
 project: "[[Projects/project-name]]"
 goal: [optional — what outcome this task serves]
 waiting-on: [who or what is blocking this, if status = blocked]
-tags: [cos, task]
 ---
 ```
 
@@ -185,7 +175,6 @@ tags: [cos, task]
 type: person
 relationship: [client | collaborator | vendor | family | other]
 priority: [high | medium | low]
-tags: [cos, person]
 ---
 ```
 
@@ -194,35 +183,8 @@ tags: [cos, person]
 ---
 type: reference
 topic: [topic]
-tags: [cos, reference]
 ---
 ```
-
-## Tags
-
-Use these tags consistently:
-
-| Tag | Used on |
-|-----|---------|
-| `cos` | Every document the Chief of Staff creates |
-| `briefing` | Daily briefings |
-| `weekly-review` | Friday weekly reviews |
-| `monthly-review` | Monthly cleanup summaries |
-| `research` | Research documents |
-| `draft` | Email/message drafts |
-| `action-plan` | Plans and breakdowns |
-| `domain` | Domain files in `Domains/` |
-| `department` | Department files in `Departments/` |
-| `project` | Project files in `Projects/` |
-| `task` | Task files in `Tasks/` |
-| `urgent` | Anything flagged as urgent |
-| `carried-over` | Items that carried over from a previous briefing |
-| `person` | Person files in `People/` |
-| `reference` | Reference docs in `Reference/` |
-| `index` | The `_index.md` file |
-
-Add project-specific tags as needed. Keep them lowercase with hyphens.
-(e.g., `website-redesign`, `q2-launch`, `client-onboarding`)
 
 ## Wikilinks
 
@@ -233,7 +195,7 @@ manually following references, even if not clickable.
 
 ### Required links:
 
-**The four-level hierarchy chain:** Each level links up to its parent via a wikilink in its frontmatter. A task links to its project, a project links to its department, a department links to its domain. This chain lets you trace any task back to its life domain.
+**The file cabinet chain (four levels):** Each level links up to its parent via a wikilink in its frontmatter. A task links to its project, a project links to its department, a department links to its domain. This chain lets you trace any task back to its life domain.
 
 **In every briefing:**
 - Link to the State Dashboard: `[[State Dashboard]]`
@@ -289,7 +251,6 @@ Use the `[[path|display text]]` format when the file path is long — it keeps t
 ---
 type: briefing
 date: YYYY-MM-DD
-tags: [cos, briefing]
 sources: [email, calendar, tasks]
 ---
 
@@ -360,7 +321,6 @@ tags: [cos, research]
 type: action-plan
 date: YYYY-MM-DD
 project: [project name]
-tags: [cos, action-plan]
 ---
 
 # Action Plan: [Title]
@@ -392,7 +352,6 @@ Written as the FIRST file during S4 (setup), and regenerated on demand if the St
 ```markdown
 ---
 type: index
-tags: [cos, index]
 ---
 
 # Chief of Staff Vault — Index
@@ -442,12 +401,6 @@ Personal journal entries do **not** live in `Chief-of-Staff/`. If the user keeps
 ## Frontmatter rules
 
 Every document must start with YAML frontmatter. Full templates live in the skill's `references/file-based-conventions.md`.
-
-## Tag rules
-
-- `cos` tag on every document the Chief of Staff touches.
-- Type tag matches the `type:` frontmatter field.
-- `urgent`, `carried-over` reserved for system use.
 
 ## Wikilinks
 
@@ -521,7 +474,6 @@ Mapping every Obsidian frontmatter block to Logseq properties:
 ```
 type:: briefing
 date:: YYYY-MM-DD
-tags:: cos, briefing
 sources:: email, calendar, tasks
 ```
 
@@ -530,7 +482,6 @@ sources:: email, calendar, tasks
 type:: weekly-review
 date:: YYYY-MM-DD
 week:: YYYY-WNN
-tags:: cos, weekly-review
 ```
 
 **Research:**
@@ -539,7 +490,6 @@ type:: research
 date:: YYYY-MM-DD
 topic:: [topic]
 requested-by:: [briefing/interactive session]
-tags:: cos, research
 ```
 
 **Draft:**
@@ -548,7 +498,6 @@ type:: draft
 date:: YYYY-MM-DD
 for:: [recipient]
 regarding:: [subject]
-tags:: cos, draft, email
 ```
 
 **Action plan:**
@@ -556,7 +505,6 @@ tags:: cos, draft, email
 type:: action-plan
 date:: YYYY-MM-DD
 project:: [project name]
-tags:: cos, action-plan
 ```
 
 **Domain:**
@@ -564,7 +512,6 @@ tags:: cos, action-plan
 type:: domain
 description:: [one-line summary]
 status:: active
-tags:: cos, domain
 ```
 
 **Department:**
@@ -573,7 +520,6 @@ type:: department
 domain:: [[Domains/domain-name]]
 description:: [what this department covers]
 status:: active
-tags:: cos, department
 ```
 
 **Task:**
@@ -585,10 +531,9 @@ due:: YYYY-MM-DD
 project:: [[Projects/project-name]]
 goal:: [optional]
 waiting-on:: [optional]
-tags:: cos, task
 ```
 
-**Project / Person / Reference:** same field-for-field mapping — every YAML key becomes a `key:: value` line. Multi-value fields (like `tags`) are comma-separated. Projects now include a `department:: [[Departments/department-name]]` property.
+**Project / Person / Reference:** same field-for-field mapping — every YAML key becomes a `key:: value` line. Projects now include a `department:: [[Departments/department-name]]` property.
 
 ### Page placement: folders → namespaces (or folders)
 
@@ -606,22 +551,12 @@ Logseq renders this in its sidebar as a nested tree (Chief-of-Staff → Briefing
 
 **Journal exception.** Logseq has a built-in `journals/` folder for daily notes. If the user already uses journals, briefings can live there instead — but that's a user preference, not a Chief-of-Staff rule. Ask at setup if they want briefings in `journals/` or under `Chief-of-Staff/Briefings/`.
 
-### Tag syntax: mixed
-
-Logseq has two ways to tag a page. Both are supported; pick one per document and stay consistent:
-
-- **Inline hashtags:** `#cos #briefing` anywhere in the page body. Logseq treats each one as a page-level tag automatically.
-- **`tags::` property:** `tags:: cos, briefing` at the top. Equivalent result; slightly cleaner for Chief-of-Staff docs because all metadata is grouped at the top.
-
-The tag vocabulary (`cos`, `briefing`, `research`, etc.) is identical to Obsidian's. Only the syntax changes.
-
 ### Quick reference table
 
 | Concept | Obsidian / plain markdown | Logseq |
 |---------|---------------------------|--------|
 | Frontmatter | YAML between `---` lines | `key:: value` lines at top |
 | Folders | `Chief-of-Staff/Briefings/file.md` | `pages/Chief-of-Staff___Briefings___file.md` (namespace) or plain folder |
-| Tags | `tags: [cos, briefing]` in YAML | `tags:: cos, briefing` or `#cos #briefing` inline |
 | Wikilinks | `[[file]]` | `[[file]]` (same) |
 | Daily notes | `Briefings/YYYY-MM-DD-briefing.md` | `journals/YYYY_MM_DD.md` (optional) or same as Obsidian |
 | Snapshots | `Archive/state-snapshot-YYYY-MM-DD.md` | same |

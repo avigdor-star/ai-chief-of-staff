@@ -349,13 +349,11 @@ Scan `Chief-of-Staff/` for files that violate the conventions in `file-based-con
 - Files in the root that aren't `_index.md`, `State Dashboard.md`, or `Live Feed.md`.
 - Files missing YAML frontmatter.
 - Filenames not matching the patterns in `_index.md`.
-- Documents with no `cos` tag.
 
 **For Notion (`notion`):**
 Query each database and scan for records that violate the conventions in `notion-conventions.md`:
 - Records missing required properties (a Briefing with no `Date`, a Project with no `Status` or `Department`, a Task with no `Project`, a Department with no `Domain`, a Person with no `Relationship`, etc.).
 - Records in the wrong database (a research item filed in Briefings, a task filed in Projects, etc.).
-- Records missing the `cos` tag.
 - Orphan pages directly under the Chief of Staff parent that aren't State Dashboard, Live Feed, or one of the eleven databases.
 
 **In both cases:**
@@ -365,7 +363,6 @@ If any violations found → surface under "Structure Drift: [N] items need clean
 1. Snapshot the State Dashboard first (standard hard gate — if the snapshot fails, stop and surface).
 2. For each item, apply the minimum fix:
    - Missing frontmatter / required property → add the minimum required fields using the defaults in `file-based-conventions.md` or `notion-conventions.md`. Do NOT invent content values (e.g., guess a `Status`).
-   - Missing `cos` tag → add it.
    - Wrong folder/database → move the item.
    - Filename/title mismatch → rename to match the convention.
 3. List each change in plain English as you go: "Moved `foo.md` from root into `Projects/`. Added `type: project` to frontmatter. Did NOT set a Status — needs your input."
@@ -462,7 +459,10 @@ Use the same structure morning and afternoon.
 10. **Recommended Actions** — specific next steps. "Reply to [person] about [topic]" not "consider following up."
     - Q: "Want me to queue any of these?"
 
-11. **Rollout Nudge** — one soft sentence per the Pacer pattern (see `references/rollout-reminder.md`). Render ONLY when ALL are true: next_eligible ≤ today, no Axiom 1 or 2 flag this session, nudge hasn't fired this session. If the render gate fails, skip this section silently (don't even announce it as empty).
+11. **File Cabinet Check** — a soft, optional nudge surfacing records that don't have a full parent chain: tasks without a project, projects without a department, departments without a domain. Render ONLY if there is at least one unnested record. Never frame as a violation or error. Always offer — don't demand. Example: "Heads up: you have 3 tasks floating without a project and 1 project without a department. Want help homing any of them?"
+    - Q: "Want to home any of these now, or leave them for later?"
+
+12. **Rollout Nudge** — one soft sentence per the Pacer pattern (see `references/rollout-reminder.md`). Render ONLY when ALL are true: next_eligible ≤ today, no Axiom 1 or 2 flag this session, nudge hasn't fired this session. If the render gate fails, skip this section silently (don't even announce it as empty).
     - Q (only if rendered): "Want me to start on that now?"
 
 **Mid-section actions — queueing rules:**
@@ -570,6 +570,25 @@ should be captured. Route to the right place based on what it is:
   a new watch list item — want me to add it?" If the user declines, move on. Don't
   offer more than twice per session to avoid nagging.
 
+**Smart nesting (file-cabinet helper):**
+
+When the user tells you about something new, infer what "level" it is from their language, then offer to nest it properly. The four file cabinet levels, smallest to largest:
+
+- **Task** — a specific action. Signals: "I need to …", "Remind me to …", "Schedule …", "Add …". One thing, one sitting. Example: "buy diapers."
+- **Project** — a specific initiative made of multiple tasks. Signals: "I want to build/create/launch/set up …", "Let's kick off …". Weeks to months of work. Example: "car maintenance system."
+- **Department** — a functional area within a life domain. Signals: naming a category of ongoing work, not a one-time initiative. Permanent. Example: "procurement."
+- **Domain** — a whole life entity. Signals: naming a business, a big life area, a shared/admin bucket. Top-level. Example: "Family."
+
+**Offer to nest — don't force.**
+
+Once you've inferred the type, check whether parents exist in the file cabinet:
+
+- **All parents exist:** propose the home and confirm. Example: "Sounds like a task — I'd file it under Personal → Home → Home Maintenance. Sound right?"
+- **Parents missing:** offer to create the missing chain. Example: "Sounds like a task ('buy diapers'). No Family domain yet — want me to set up Family → Procurement → Hygiene first, then add the task? Or skip the nesting and leave the task on its own?"
+- **User skips nesting:** create the record with no parents. It still works, still surfaces in briefings. Not a violation — an acceptable state.
+
+Apply the same pattern when the user creates a project, department, or domain — infer the type, propose the placement, offer to create missing parents, don't force. A dangling record is a nudge target on the next brief, not an error.
+
 **Task management:**
 - "Add a task: …" / "Remind me to …" / "I need to …" → create a new task in the Tasks database/folder. Infer project, priority, and due date from context. Tell the user what you picked so they can correct it. If no matching project exists, offer to create one (and link it to the right department).
 - "What's on my plate?" / "What tasks do I have?" → query the Tasks database for Status != done/cancelled, sorted by due date. Group by project.
@@ -671,7 +690,7 @@ When talking to the user, use plain language instead of internal terms:
 - **Pacer / Check-in State** → "a gentle check-in on how the rollout is going — at most one soft sentence per window"
 - **Domain** → "a big area of your life" (e.g., your business, personal life)
 - **Department** → "a type of work within that area" (e.g., Marketing, Health)
-- **Four-level hierarchy** → "the way everything is organized: Domain > Department > Project > Task"
+- **File cabinet** → "the way everything is organized: Domain > Department > Project > Task (four levels)"
 
 The technical terms are fine inside these reference files. Use plain language when
 speaking directly to the user.
@@ -684,7 +703,7 @@ Read these when needed:
 - `references/signal-filters.md` — What to surface vs skip, priority ranking
 - `references/watcher-playbook.md` — All watcher definitions, schedules, phased setup
 - `references/platform-choice.md` — Guided flow for picking between Obsidian, Logseq, plain markdown, and Notion. Load during Step S1.5.
-- `references/file-based-conventions.md` — How to structure documents in Obsidian, Logseq, or plain markdown folders: folders, frontmatter, tags, wikilinks, templates.
+- `references/file-based-conventions.md` — How to structure documents in Obsidian, Logseq, or plain markdown folders: folders, frontmatter, wikilinks, templates.
 - `references/notion-conventions.md` — How to structure documents in Notion: databases, pages, properties, relations, templates.
 - `references/backup-setup.md` — AI-assisted walkthrough for setting up end-to-end encrypted backup. Four paths for file-based vaults (Cryptomator, git-crypt, Proton Drive, Syncthing) and one path for Notion (weekly encrypted export). Load during Step S6 and whenever Step 1a's backup check fails.
 - `references/rollout-reminder.md` — The Pacer pattern: rollout nudge logic, verbatim phrasings, Express Lane, snooze, rollback, and the `rollout_reminder` storage schema. Load whenever a rollout nudge fires, the user expresses Express/snooze/rollback intent, or a contextual hook is detected.
@@ -719,7 +738,7 @@ The skill finds the user's existing data by looking for specific names. If a fut
 - `My Setup` section: `Name`, `Email`, `Role`, `Company`, `Chief Name`, `Personality`, `Alert Threshold`
 
 ### File-based frontmatter keys (Obsidian / Logseq / plain markdown)
-- Captain's Log entries: `type: captains-log`, `date`, `log_type`, `project`, `cos: true`
+- Captain's Log entries: `type: captains-log`, `date`, `log_type`, `project`
 - State Dashboard: `platform`, `chief_name`, `personality`, `setup_status`
 - Domains: `type: domain`, `description`, `status`
 - Departments: `type: department`, `domain`, `description`, `status`
@@ -727,10 +746,10 @@ The skill finds the user's existing data by looking for specific names. If a fut
 - Tasks: `type: task`, `status`, `priority`, `due`, `project`, `goal`, `waiting-on`
 
 ### Logseq block properties
-- Captain's Log: `type::`, `date::`, `log-type::`, `project::`, `cos::`
-- Domains: `type::`, `description::`, `status::`, `cos::`
-- Departments: `type::`, `domain::`, `description::`, `status::`, `cos::`
-- Tasks: `type::`, `status::`, `priority::`, `due::`, `project::`, `goal::`, `waiting-on::`, `cos::`
+- Captain's Log: `type::`, `date::`, `log-type::`, `project::`
+- Domains: `type::`, `description::`, `status::`
+- Departments: `type::`, `domain::`, `description::`, `status::`
+- Tasks: `type::`, `status::`, `priority::`, `due::`, `project::`, `goal::`, `waiting-on::`
 
 ### If you must rename something in a future version:
 1. Add a note at the top of SKILL.md: "v0.X migration: [old name] was renamed to [new name]"

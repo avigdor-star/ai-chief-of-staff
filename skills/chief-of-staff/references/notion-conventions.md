@@ -162,7 +162,6 @@ Mirrors `Briefings/` folder.
 | Name | Title | Briefing title (e.g., "Briefing — YYYY-MM-DD", "Weekly Review — YYYY-MM-DD") |
 | Date | Date | The date of the briefing |
 | Type | Select | `briefing` / `weekly-review` / `monthly-cleanup` |
-| Tags | Multi-select | `cos`, plus project tags |
 | Sources | Multi-select | `email`, `calendar`, `tasks`, `messaging` |
 | Related Projects | Relation → Projects | Projects this briefing touched |
 | Related People | Relation → People | People referenced |
@@ -180,7 +179,6 @@ Mirrors `Research/` folder.
 | Name | Title | Topic (e.g., "Competitor Pricing") |
 | Date | Date | When researched |
 | Requested By | Relation → Briefings | The briefing that kicked off this research |
-| Tags | Multi-select | `cos`, `research`, plus topic tags |
 | Related Projects | Relation → Projects | |
 | Status | Select | `active` / `archived` |
 
@@ -196,7 +194,6 @@ Mirrors `Drafts/` folder.
 | Date | Date | When drafted |
 | For | Relation → People (or text if unknown) | Who it's going to |
 | Regarding | Text | Subject / topic |
-| Tags | Multi-select | `cos`, `draft`, `email` |
 | Related Briefing | Relation → Briefings | The briefing that requested the draft |
 | Status | Select | `draft` / `sent` / `discarded` |
 
@@ -211,7 +208,6 @@ Mirrors `Action-Plans/` folder.
 | Name | Title | Plan title |
 | Date | Date | When created |
 | Project | Relation → Projects | Which project it belongs to |
-| Tags | Multi-select | `cos`, `action-plan` |
 | Related Briefing | Relation → Briefings | |
 | Status | Select | `active` / `completed` / `archived` |
 
@@ -219,14 +215,13 @@ Mirrors `Action-Plans/` folder.
 
 ### Domains database
 
-Top of the four-level hierarchy. A domain is a distinct life entity — a business, "Personal," or a shared/admin bucket. Most users have 3–5 domains.
+Top of the file cabinet (four-level hierarchy). A domain is a distinct life entity — a business, "Personal," or a shared/admin bucket. Most users have 3–5 domains.
 
 | Property | Type | Purpose |
 |----------|------|---------|
 | Name | Title | Domain name (e.g., "My Agency", "Personal", "Shared") |
 | Description | Text | One-line summary of what this domain covers |
 | Status | Select | `active` / `archived` |
-| Tags | Multi-select | `cos`, `domain` |
 
 **Body:** Optional — notes, mission statement, or links to external resources for this domain.
 
@@ -240,7 +235,6 @@ Second level. A department is a functional area within a domain — the kind of 
 | Domain | Relation → Domains | Which domain this belongs to |
 | Description | Text | What this department covers |
 | Status | Select | `active` / `archived` |
-| Tags | Multi-select | `cos`, `department` |
 
 **Body:** Optional — ongoing notes, KPIs, or links relevant to this area.
 
@@ -258,7 +252,6 @@ Mirrors `Projects/` folder. Third level — a specific initiative within a depar
 | Next Milestone | Text | Short text |
 | Blockers | Text | What's holding progress |
 | Notes | Text | Ongoing notes |
-| Tags | Multi-select | `cos`, `project`, project-slug |
 | Key People | Relation → People | |
 | Related Briefings | Relation → Briefings (auto back-relation) | |
 
@@ -278,7 +271,6 @@ Fourth level — the actual to-dos. Every task belongs to a project. Through tha
 | Goal | Text | Optional — what outcome this task serves (for alignment without adding a 5th hierarchy level) |
 | Notes | Text | Context, details, links |
 | Waiting On | Text | Who or what is blocking this (only relevant when Status = blocked) |
-| Tags | Multi-select | `cos`, `task`, plus any relevant tags |
 | Related Briefing | Relation → Briefings | The briefing that spawned this task (if applicable) |
 
 **Body:** Optional — checklists, sub-steps, or detailed notes. Use Notion's built-in checklist blocks for sub-dividing complex tasks rather than creating a 5th hierarchy level.
@@ -294,7 +286,6 @@ Mirrors `People/` folder.
 | Priority | Select | `high` / `medium` / `low` |
 | Email | Email | Primary email address |
 | Why Priority | Text | One-line reason |
-| Tags | Multi-select | `cos`, `person` |
 | Related Projects | Relation → Projects | |
 
 **Body:** ongoing notes about the person, history, context.
@@ -306,7 +297,6 @@ Mirrors `Reference/` folder.
 | Property | Type | Purpose |
 |----------|------|---------|
 | Name | Title | Topic |
-| Tags | Multi-select | `cos`, `reference`, topic tags |
 
 **Body:** evergreen reference material — SOPs, playbooks, saved links.
 
@@ -328,39 +318,13 @@ Snapshots are a **third, separate** thing — they live in the `Snapshots` subpa
 
 ---
 
-## Tags
-
-Same tag vocabulary as the file-based schema, implemented as a multi-select property on every database. Values lowercase with hyphens.
-
-| Tag | Used on |
-|-----|---------|
-| `cos` | Every record the Chief of Staff creates |
-| `briefing` | Briefings database |
-| `weekly-review` | Briefings database (Type = weekly-review) |
-| `monthly-review` | Briefings database (Type = monthly-cleanup) |
-| `research` | Research database |
-| `draft` | Drafts database |
-| `action-plan` | Action Plans database |
-| `domain` | Domains database |
-| `department` | Departments database |
-| `project` | Projects database |
-| `task` | Tasks database |
-| `urgent` | Anything flagged urgent |
-| `carried-over` | Items carried from a previous briefing |
-| `person` | People database |
-| `reference` | Reference database |
-
-Add project-specific tags as needed. Keep them lowercase with hyphens.
-
----
-
 ## Linking records (relations replace wikilinks)
 
 The file-based schema uses `[[wikilink]]` syntax. In Notion, linking between records is done via the **Relation** property defined on each database.
 
 **Examples of required links (all implemented via Relation properties, not inline text):**
 
-- **The four-level hierarchy chain:** Domain ← Department ← Project ← Task. Each level links up to its parent via a Relation property. A task inherits its department and domain through its project.
+- **The file cabinet chain (four levels):** Domain ← Department ← Project ← Task. Each level links up to its parent via a Relation property. A task inherits its department and domain through its project.
 - Every Briefing record has a Relation to the Projects it touched and the People referenced.
 - Every Research / Draft / Action Plan has a Relation to the Briefing that spawned it.
 - Tasks can link to the Briefing that spawned them (optional).
